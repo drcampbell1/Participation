@@ -28,6 +28,20 @@ ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   theme_bw()+
   guides(fill=FALSE)
 
+# What's changed over time? 
+
+ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
+  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
+  filter(!vote=="did not vote") %>%
+  ggplot(aes(year, prop))+
+  geom_line()+
+  facet_wrap(~country, nrow = 3)+
+  labs(x="", y="", title="Figure 1: Turnout by Country", caption="ESS 2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
+
+
 # Exercise 2: Let's test our theories#
 # Q1: Do Socio-Economic Resources Matter#
 # What about Education?#
@@ -49,21 +63,6 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   theme_bw()+
   theme(legend.title = element_blank())+
   theme(legend.position = "bottom")
-
-# What's changed over time? 
-
-ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!vote=="did not vote") %>%
-  ggplot(aes(year, prop))+
-  geom_line()+
-  facet_wrap(~country, nrow = 3)+
-  labs(x="", y="", title="Figure 1: Turnout by Country", caption="ESS 2016")+
-  scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
-
-
 
 # Turnout by Education and Country #
 
@@ -149,8 +148,38 @@ ess %>% group_by(ptrust, country) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   theme(legend.position = "bottom")+
   scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
 
-# Two questions to conclude with:
+# Bonus Question: Let's ask if young people vote. 
+# We can do this by comparing the percentage of young people found in the sample with the percentage found amongst the voters?
+
+a <- ess %>% 
+filter(!is.na(age)) %>% 
+mutate(generation = if_else(age >= 18 & age <= 25, "18-25", "26+")) %>% 
+count(generation) %>% 
+mutate(percent = round(n /sum(n)*100, digits = 1)) 
+
+b <- ess %>% 
+filter(!is.na(age)) %>% 
+mutate(generation = if_else(age >= 18 & age <= 25, "18-25", "26+")) %>% 
+filter(vote == "voted") %>% 
+group_by(generation) %>% 
+count(vote) %>% 
+ungroup() %>% 
+mutate(percent = round(n/sum(n)*100, digits = 1))
+
+left_join(a, b, by = "generation") %>% 
+select(-c(n.x, n.y, vote)) %>% 
+knitr::kable("pandoc", 
+             caption = "Percentage of Age within Sample and Percentage of Age Cohort amongst Voters",
+             col.names = c('Generation', 
+                           'Percentage Within Sample', 
+                           'Percentage Within Voters'), 
+             align="ccc") %>% 
+print()
+
+# Three questions to conclude with:
 
       #So, thinking over the theories we've look at: which ones work?
 
       #Do all work equally well in all countries?
+
+      #Does it matter that young people seem less likely to vote?
