@@ -59,7 +59,7 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
   labs(x="", y="", title="Figure 3: Turnout by Education and Country", caption="Source: ESS 2002-2018")+
   geom_bar(stat="identity", position="dodge")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
-  facet_wrap(~cntry, nrow=3)+
+  facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
@@ -67,8 +67,8 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 #Q2: Does Rationality Influence Turnout?
 
-ess %>% group_by(econsat) %>% filter(!is.na(vote), !is.na(econsat)) %>%
-  count(vote1) %>% mutate(prop= n /sum(n)*100) %>%
+ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
+  count(vote) %>% mutate(prop= n /sum(n)*100) %>%
   knitr::kable("pandoc", caption = "Perceptions of the Economy and Electoral Turnout",
   col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)
 
