@@ -91,7 +91,7 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
-  ggplot(aes(x=satecon, y=prop, fill=vote1))+
+  ggplot(aes(x=satecon, y=prop, fill=vote))+
   labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2016")+
   geom_bar(stat="identity", position="dodge")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
@@ -105,14 +105,14 @@ ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 #Q3 Does culture Matter?
 
-ESS %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
+ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop= n / sum(n)*100) %>%
   knitr::kable("pandoc", caption = "Trust in Politics and Electoral Turnout",
   col.names=c('Trust', 'Voted', 'N', '%'), align="ccccc", digits=1)
 
-ESS %>% group_by(ptrust) %>% filter(!is.na(vote1), !is.na(ptrust)) %>%
+ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  ggplot(aes(x=ptrust, y=prop, fill=vote1))+
+  ggplot(aes(x=ptrust, y=prop, fill=vote))+
   labs(x="", y="", title="Figure 6: Turnout by Trust in Politics", caption="ESS 2016")+
   geom_bar(stat="identity", position="dodge")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
@@ -122,7 +122,7 @@ ESS %>% group_by(ptrust) %>% filter(!is.na(vote1), !is.na(ptrust)) %>%
   theme(legend.position = "bottom")+
   scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
 
-ESS %>% group_by(ptrust, country) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
+ess %>% group_by(ptrust, country) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
   ggplot(aes(x=ptrust, y=prop, fill=vote))+
   labs(x="", y="", title="Figure 7: Turnout by Trust in Politics", caption="ESS 2016")+
