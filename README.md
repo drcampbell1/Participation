@@ -2,7 +2,7 @@
 
 In this module, I will run seven interactive sessions which mimic the flow of how political scientists conduct research on political participation. Each session will take a separate form of participation. We will analyse how many people participate in that form, compare the levels across different countries and political systems and then probe into the factors that influence it.  
 
-### What technology will we use to do this? 
+## What technology will we use to do this? 
 
 We are going to use an online computational environment that can be accessed from the "launch binder" icon below. After you click on it, you will go into a bespoke learning environment that I created for these sessions. This might take some time to load, possibly **4-5 minutes**, depending on the speed of your network. Because of this, it might be tempting to assume it isn't working and try again. Please **don't** do this. Instead, be patient and you will get there. In all the times I've tried to access the site, it has never failed outright. 
 
