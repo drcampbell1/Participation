@@ -3,21 +3,21 @@ library(tidyverse)
 options(warn = -1)
 
 # Exercise 1: Let's look at voting#
-#Let's ask a simple question: do people vote?
+# Let's ask a simple question: do people vote?
 
 ess %>% filter(!is.na(vote)) %>% count(vote) %>%
   mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
   knitr::kable("pandoc", caption = "Electoral Turnout in European Democracies",
   col.names = c('voted', 'N', '%'), align="lccc")
 
-#How does this vary by country?#
+# How does this vary by country?#
 
 ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   count(vote) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
   knitr::kable("pandoc", caption = "Electoral Turnout in European Democracies",
   col.names = c('Country', 'Voted', 'N', '%'), align="cccc")
 
-#We can present this graphically to make it clearer#
+# We can present this graphically to make it clearer#
 ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!vote=="did not vote") %>%
@@ -28,16 +28,16 @@ ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   theme_bw()+
   guides(fill=FALSE)
 
-#Exercise 2: Let's test our theories#
-#Q1: Do Socio-Economic Resources Matter#
-#What about Education?#
+# Exercise 2: Let's test our theories#
+# Q1: Do Socio-Economic Resources Matter#
+# What about Education?#
 
 ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate("%" =n/sum(n)*100) %>%
   knitr::kable("pandoc", caption = "Education and Electoral Turnout",
   col.names = c('Education', 'Voted', 'N', '%'), align="ccccc", digits=1)
 
-#We can graph the relationship
+# We can graph the relationship
 
 ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
@@ -50,8 +50,22 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   theme(legend.title = element_blank())+
   theme(legend.position = "bottom")
 
+# What's changed over time? 
 
-#Turnout by Education and Country#
+ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
+  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
+  filter(!vote=="did not vote") %>%
+  ggplot(aes(year, prop))+
+  geom_line()+
+  facet_wrap(~country, nrow = 3)+
+  labs(x="", y="", title="Figure 1: Turnout by Country", caption="ESS 2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
+
+
+
+# Turnout by Education and Country #
 
 ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
@@ -65,14 +79,14 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
   theme(legend.title = element_blank())+
   theme(legend.position = "bottom")
 
-#Q2: Does Rationality Influence Turnout?
+# Q2: Does Rationality Influence Turnout?
 
 ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop= n /sum(n)*100) %>%
   knitr::kable("pandoc", caption = "Perceptions of the Economy and Electoral Turnout",
   col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)
 
-#We can graph this relationship
+# We can graph this relationship
 
 ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
@@ -87,7 +101,7 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
 
 
-#Does it differ between the countries?
+# Does it differ between the countries?
 
 ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
