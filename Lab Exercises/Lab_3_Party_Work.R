@@ -23,7 +23,7 @@ ess %>% filter(!is.na(party)) %>% count(party) %>%
 #How does this vary by country?#
 
 ess %>% group_by(country) %>% filter(!is.na(party)) %>%
-  count(wparty) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
+  count(party) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
   knitr::kable("pandoc", caption = "Comparing Work for Party in European Democracies",
   col.names = c('Country', 'Worked', 'N', '%'), align="cccc")
 
@@ -31,7 +31,7 @@ ess %>% group_by(country) %>% filter(!is.na(party)) %>%
 
 ess %>% group_by(country) %>% filter(!is.na(party)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!wparty=="have not worked for pp") %>%
+  filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_col()+
   labs(x="", y="", title="Figure 1: Worked for Party by Country", caption="ESS 2016")+
@@ -74,7 +74,7 @@ ess %>% group_by(educat) %>% filter(!is.na(party), !is.na(educat)) %>%
        guides(fill=FALSE)
 
 ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
-  count(wparty) %>% mutate(prop=prop.table(n*100)) %>%
+  count(party) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
@@ -89,8 +89,8 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
 #Economically Optimistic Party Workers?
 
 ess %>% group_by(econsat) %>% filter(!is.na(party), !is.na(econsat)) %>%
-  count(wparty) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!wparty=="have not worked for pp") %>%
+  count(party) %>% mutate(prop=prop.table(n*100)) %>%
+  filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
   labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2016")+
@@ -99,8 +99,8 @@ ess %>% group_by(econsat) %>% filter(!is.na(party), !is.na(econsat)) %>%
   guides(fill=FALSE)
 
 ess %>% group_by(econsat, country) %>% filter(!is.na(party), !is.na(econsat)) %>%
-  count(wparty) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!wparty=="have not worked for pp") %>%
+  count(party) %>% mutate(prop=prop.table(n*100)) %>%
+  filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
   facet_grid(~country)+
