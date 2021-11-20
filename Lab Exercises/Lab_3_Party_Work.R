@@ -31,7 +31,7 @@ ess %>% group_by(country) %>% filter(!is.na(party)) %>%
 
 ess %>% group_by(country) %>% filter(!is.na(party)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!party=="have not worked for pp") %>%
+  filter(!party=="not worked") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_col()+
   labs(x="", y="", title="Figure 1: Worked for Party by Country", caption="ESS 2002-2018")+
@@ -52,9 +52,14 @@ left_join(a, b, by = "country") %>% select(-party) %>%
 c <- ess %>% group_by(country) %>%
   count(gender) %>%
   mutate(perc_pop=n/sum(n)*100)
-d <- ess %>% filter(party=="have worked for pp") %>% group_by(country, gender) %>%
-       count(party) %>% group_by(country) %>% mutate(perc_wk_pp=n/sum(n)*100) %>%
+
+d <- ess %>% filter(party=="not worked") %>% 
+       group_by(country, gender) %>%
+       count(party) %>% 
+       group_by(country) %>% 
+        mutate(perc_wk_pp=n/sum(n)*100) %>%
        select(-party)
+
 left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
   knitr::kable("pandoc", caption = "Gender Balance in Population and Workers of Parties in European Democracies",
                col.names = c('Country', 'Gender', 'Population', 'Workers of Political Party'),
@@ -65,7 +70,7 @@ left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
 
 ess %>% group_by(educat) %>% filter(!is.na(party), !is.na(educat)) %>%
        count(wparty) %>% mutate(prop=prop.table(n*100)) %>%
-       filter(!party=="have not worked for pp") %>%
+       filter(!party=="not worked") %>%
        ggplot(aes(x=educat, y=prop)) +
        geom_col()+
        labs(x="", y="", title="Figure 2: Worked for Party by Education", caption="ESS 2002-2018")+
@@ -75,10 +80,10 @@ ess %>% group_by(educat) %>% filter(!is.na(party), !is.na(educat)) %>%
 
 ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!party=="have not worked for pp") %>%
+  filter(!party=="not worked") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
-  facet_grid(~country)+
+  facet_wrap(~country, nrow = 3)+
   labs(x="", y="", title="Figure 3: Worked for Party by Education and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
@@ -90,7 +95,7 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
 
 ess %>% group_by(econsat) %>% filter(!is.na(party), !is.na(econsat)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!party=="have not worked for pp") %>%
+  filter(!party=="not worked") %>%
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
   labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2002-2018")+
@@ -100,10 +105,10 @@ ess %>% group_by(econsat) %>% filter(!is.na(party), !is.na(econsat)) %>%
 
 ess %>% group_by(econsat, country) %>% filter(!is.na(party), !is.na(econsat)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!party=="have not worked for pp") %>%
+  filter(!party=="not worked") %>%
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
-  facet_grid(~country)+
+  facet_wrap(~country, nrow = 3)+
   labs(x="", y="", title="Figure 5: Worked for Party by Economic Optimism and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
