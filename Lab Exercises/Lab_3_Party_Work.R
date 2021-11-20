@@ -34,7 +34,7 @@ ess %>% group_by(country) %>% filter(!is.na(party)) %>%
   filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 1: Worked for Party by Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 1: Worked for Party by Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -68,7 +68,7 @@ ess %>% group_by(educat) %>% filter(!is.na(party), !is.na(educat)) %>%
        filter(!party=="have not worked for pp") %>%
        ggplot(aes(x=educat, y=prop)) +
        geom_col()+
-       labs(x="", y="", title="Figure 2: Worked for Party by Education", caption="ESS 2016")+
+       labs(x="", y="", title="Figure 2: Worked for Party by Education", caption="ESS 2002-2018")+
        scale_y_continuous(labels=scales::percent)+
        theme_bw()+
        guides(fill=FALSE)
@@ -79,7 +79,7 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
   facet_grid(~country)+
-  labs(x="", y="", title="Figure 3: Worked for Party by Education and Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 3: Worked for Party by Education and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)+
@@ -93,7 +93,7 @@ ess %>% group_by(econsat) %>% filter(!is.na(party), !is.na(econsat)) %>%
   filter(!party=="have not worked for pp") %>%
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -104,7 +104,7 @@ ess %>% group_by(econsat, country) %>% filter(!is.na(party), !is.na(econsat)) %>
   ggplot(aes(x=econsat, y=prop)) +
   geom_col()+
   facet_grid(~country)+
-  labs(x="", y="", title="Figure 5: Worked for Party by Economic Optimism and Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 5: Worked for Party by Economic Optimism and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)+
