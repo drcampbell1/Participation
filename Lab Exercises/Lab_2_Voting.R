@@ -56,7 +56,7 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
 ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill=vote))+
-  labs(x="", y="", title="Figure 2: Turnout by Education", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 2: Turnout by Education", caption="ESS 2002-2018")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
   geom_bar(stat="identity", position="dodge")+
   scale_y_continuous(labels=scales::percent)+
@@ -68,10 +68,9 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
-  ggplot(aes(x=educat, y=prop, fill=vote))+
+  ggplot(aes(x=educat, y=prop))+
   labs(x="", y="", title="Figure 3: Turnout by Education and Country", caption="Source: ESS 2002-2018")+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  geom_col()+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
@@ -89,10 +88,9 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
-  ggplot(aes(x=satecon, y=prop, fill=vote))+
-  labs(x="", y="", title="Figure 4: Turnout by Perceptions of the Economy", caption="ESS 2016")+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  ggplot(aes(x=satecon, y=prop))+
+  labs(x="", y="", title="Figure 4: Turnout by Perceptions of the Economy", caption="Source: ESS 2002-2018")+
+  geom_col()+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
@@ -104,10 +102,9 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
-  ggplot(aes(x=satecon, y=prop, fill=vote))+
+  ggplot(aes(x=satecon, y=prop))+
   labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2016")+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  geom_col()+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
@@ -125,10 +122,9 @@ ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
 
 ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  ggplot(aes(x=ptrust, y=prop, fill=vote))+
-  labs(x="", y="", title="Figure 6: Turnout by Trust in Politics", caption="ESS 2016")+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  ggplot(aes(x=ptrust, y=prop))+
+  labs(x="", y="", title="Figure 6: Turnout by Trust in Politics", caption="ESS 2002-2018")+
+  geom_col()+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
@@ -137,10 +133,9 @@ ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
 
 ess %>% group_by(ptrust, country) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  ggplot(aes(x=ptrust, y=prop, fill=vote))+
-  labs(x="", y="", title="Figure 7: Turnout by Trust in Politics", caption="ESS 2016")+
-  geom_bar(stat="identity", position="dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  ggplot(aes(x=ptrust, y=prop))+
+  labs(x="", y="", title="Figure 7: Turnout by Trust in Politics", caption="ESS 2002-2018")+
+  geom_col()+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
