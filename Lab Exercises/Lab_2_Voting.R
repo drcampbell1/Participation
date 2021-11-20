@@ -1,6 +1,6 @@
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
-options(warn = -1))
+options(warn = -1)
 
 # Exercise 1: Let's look at voting#
 # Let's ask a simple question: do people vote?
