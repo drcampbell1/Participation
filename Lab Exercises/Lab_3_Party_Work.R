@@ -9,23 +9,27 @@
 # In this lab, we're going to look at who works for political parties,
 # examining their socio-economic background to see if there is inequality.
 
-ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 #Let's begin by looking at the general levels of working for parties:
 
 ess %>% filter(!is.na(party)) %>% count(party) %>%
   mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Work for Party in European Democracies",
-  col.names = c('Worked', 'N', '%'), align="lccc")
+  kbl(caption = "Work for Party in European Democracies",
+  col.names = c('Worked', 'N', '%'), align="lccc")%>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 #How does this vary by country?#
 
 ess %>% group_by(country) %>% filter(!is.na(party)) %>%
   count(party) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Comparing Work for Party in European Democracies",
-  col.names = c('Country', 'Worked', 'N', '%'), align="cccc")
+  kbl(caption = "Comparing Work for Party in European Democracies",
+  col.names = c('Country', 'Worked', 'N', '%'), align="cccc")%>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 # Let's graph this to make the findings stand out a bit better
 
@@ -44,8 +48,10 @@ ess %>% group_by(country) %>% filter(!is.na(party)) %>%
 a <- ess %>% group_by(country) %>% summarise(mean= mean(age, na.rm=T))
 b <- ess %>% group_by(country, party) %>% summarise(avg_age_pp= mean(age, na.rm=T)) %>% filter(!is.na(party), !party=="have not worked for pp")
 left_join(a, b, by = "country") %>% select(-party) %>%
-     knitr::kable("pandoc", caption = "Average Population and Workers of Parties in European Democracies",
-     col.names = c('Country', 'Average Age Population', 'Average Age Worker Political Party'), digits =1, align="cccc") %>% print()
+     kbl(caption = "Average Population and Workers of Parties in European Democracies",
+     col.names = c('Country', 'Average Age Population', 'Average Age Worker Political Party'), digits =1, align="cccc") %>%
+     kable_classic_2(full_width=F, position= "left")%>%
+     footnote(general = "Source: ESS 2002-2018")
 
 # Is there gender balance amongst workers of political parties compared with the population?#
 
@@ -61,9 +67,11 @@ d <- ess %>% filter(party=="not worked") %>%
        select(-party)
 
 left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
-  knitr::kable("pandoc", caption = "Gender Balance in Population and Workers of Parties in European Democracies",
+  kbl(caption = "Gender Balance in Population and Workers of Parties in European Democracies",
                col.names = c('Country', 'Gender', 'Population', 'Workers of Political Party'),
-               digits =1, align="cccc") %>% print()
+               digits =1, align="cccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 #Let's take a look at Education#
 
