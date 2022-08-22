@@ -2,29 +2,33 @@
 
 # In this lab, we're going to test some aspects of those theories with evidence from the ESS
 
-ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 ess %>% filter(!is.na(right)) %>% count(right) %>%
   mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Voted for the Radical Right in European Democracies",
-               col.names = c('Voted Radical Right', 'N', '%'), align="lccc")
+  kbl(caption = "Voted for the Radical Right in European Democracies",
+               col.names = c('Voted Radical Right', 'N', '%'), align="lccc")%>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 #How does this vary by country?#
 
 ess %>% group_by(country) %>% filter(!is.na(right)) %>%
      count(right) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>% filter(!right =="did not vote") %>% 
-     knitr::kable("pandoc", caption = "Comparing Voting for Radical Right in European Democracies",
-     col.names = c('Country', 'Voted Radical Right', 'N', '%'), align="cccc")
+     kbl("pandoc", caption = "Comparing Voting for Radical Right in European Democracies",
+     col.names = c('Country', 'Voted Radical Right', 'N', '%'), align="cccc")%>%
+     kable_classic_2(full_width=F, position= "left")%>%
+     footnote(general = "Source: ESS 2002-2018")
 
 
 # Let's graph this to make the findings stand out a bit better
 
 ess %>% group_by(country) %>% filter(!is.na(right)) %>%
   count(right) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!right=="no") %>%
-  ggplot(aes(x=reorder(cntry, -prop), y=prop)) +
+  filter(!right=="did not vote") %>%
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_col()+
   labs(x="", y="", title="Figure 1: Voted for Radical Right Party by Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
@@ -41,8 +45,13 @@ b <- ess %>% group_by(country, right) %>%
              filter(!is.na(right), !right=="did not vote")
 
 left_join(a, b, by = "country") %>% select(-right) %>%
-          knitr::kable("pandoc", caption = "Average Age of Population and Voters of Radical Right Parties in European Democracies",
-          col.names = c('Country', 'Average Age Population', 'Average Age Voter Radical Right Party'), digits =1, align="cccc")
+          kbl(caption = "Average Age of Population and Voters of Radical Right Parties in European Democracies",
+          col.names = c('Country', 
+                        'Average Age Population', 
+                        'Average Age Voter Radical Right Party'), 
+              digits =1, align="cccc")%>%
+          kable_classic_2(full_width=F, position= "left")%>%
+          footnote(general = "Source: ESS 2002-2018")
 
 # What does this tell us about the age profile of voters for radical right parties?
 
@@ -66,9 +75,11 @@ d <- ess %>%
   select(-right)
 
 left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
-  knitr::kable("pandoc", caption = "Gender Balance in Population and Voters of Radical Right Parties in European Democracies",
+  kbl(caption = "Gender Balance in Population and Voters of Radical Right Parties in European Democracies",
                col.names = c('Country', 'Gender', 'Percentage Population', 'Percentage Voter of Radical Right Political Party'),
-               digits =1, align="cccc") %>% print()
+               digits =1, align="cccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 rm(a,b,c,d)
 
@@ -76,11 +87,11 @@ rm(a,b,c,d)
 #Let's look at Education
 
 ess %>% group_by(educat) %>% filter(!is.na(right), !is.na(educat)) %>%
-  count(rright) %>% mutate(prop=prop.table(n*100)) %>%
+  count(right) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 2: Voting for the Radical Right by Education", caption="ESS 2002-2018")+
+  labs(x="", y="", title="Figure 2: Voting for the Radical Right by Education", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -93,7 +104,7 @@ filter(!is.na(right), !is.na(educat)) %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow=3)+
-  labs(x="", y="", title="Figure 3: Voting for the Radical Right by Education and Country", caption="ESS 2002-2018")+
+  labs(x="", y="", title="Figure 3: Voting for the Radical Right by Education and Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -109,7 +120,7 @@ ess %>% group_by(ptrust) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=ptrust, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 4: Political Trust and Voting for the Radical Right", caption="ESS 2002-2018")+
+  labs(x="", y="", title="Figure 4: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -121,8 +132,8 @@ ess %>% group_by(ptrust, country) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=ptrust, y=prop)) +
   geom_col()+
-  facet_wrap(~cntry, nrow=3)+
-  labs(x="", y="", title="Figure 5: Political Trust and Voting for the Radical Right", caption="ESS 2002-2018")+
+  facet_wrap(~country, nrow=3)+
+  labs(x="", y="", title="Figure 5: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -132,10 +143,13 @@ ess %>% group_by(ptrust, country) %>%
 
 ess %>% group_by(immdeth) %>% filter(!is.na(right), !is.na(immdeth)) %>%
   count(right) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!right=="no") %>%
+  filter(!right=="did not vote") %>%
   ggplot(aes(x=immdeth, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 6: Attitudes to Immigration and Voting for the Radical Right", caption="ESS 2016")+
+  labs(x="", y="", 
+       title="Figure 6: Attitudes to Immigration and Voting for the Radical Right",
+       subtitle = "(different ethnicity)",
+       caption="ESS 2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
