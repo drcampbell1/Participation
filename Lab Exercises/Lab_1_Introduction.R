@@ -12,6 +12,7 @@
 #Before we look at the data, we need to do a few things to set up the lab project:
 
 install.packages("tidyverse")
+install.packages("kableExtra")
 
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
