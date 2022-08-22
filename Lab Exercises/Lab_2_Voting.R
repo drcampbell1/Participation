@@ -1,4 +1,3 @@
-ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
 options(warn = -1)
 
@@ -176,6 +175,7 @@ knitr::kable("pandoc",
                            'Percentage Within Voters'), 
              align="ccc") %>% 
 print()
+rm(a,b)
 
 # Three questions to conclude with:
 
