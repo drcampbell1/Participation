@@ -112,29 +112,16 @@ View(ess)
 # What if we compared a lot of forms across countries:
 
 ess %>% 
-  drop_na() %>% 
-  pivot_longer((vote1:demo), names_to = "mode", values_to = "value") %>% 
-  group_by(cntry, mode) %>% 
-  count(value) %>% 
-  mutate(percent = n/sum(n)*100) %>% 
-  filter(value==str_remove(value, "not")) %>% 
-  mutate(value = fct_reorder(value, percent)) %>% 
-  ggplot(aes(reorder(value, percent), percent))+
-  geom_col(fill="steelblue")+
-  facet_wrap(~cntry, scales = "free_x")+
-  coord_flip()+
-  theme_minimal()+
-  scale_x_discrete(labels = c("party worker", 
-                               "demonstrated", 
-                              "worn badge", 
-                              "contacted", 
-                              "petitioned",
-                              "voted"))+
-  labs(x="", 
-       y = "%", 
-       title = "Comparing Political Participation Across\nEuropean Democracies (%)", 
-       caption = "Source: European Social Survey")
-
-
-
-
+    pivot_longer((vote:petit), names_to = "mode", values_to = "value") %>% 
+    select(country, mode, value) %>% group_by(country, mode) %>% filter(!is.na(value)) %>% count(value) %>% mutate(percent = n/sum(n)*100) %>% 
+    filter(value==str_remove(value, "not")) %>% filter(value==str_remove(value, "did not")) %>%
+    mutate(value = fct_reorder(value, percent)) %>% 
+    ggplot(aes(reorder(value, percent), percent))+
+    geom_col(fill="steelblue")+
+    facet_wrap(~country, scales = "free_x")+
+    coord_flip()+
+    theme_minimal()+
+    labs(x="", 
+         y = "%", 
+         title = "Comparing Political Participation Across\nEuropean Democracies (%)", 
+         caption = "Source: European Social Survey")
