@@ -22,7 +22,7 @@ ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   filter(!vote=="did not vote") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 1: Turnout by Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 1: Turnout by Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -105,7 +105,7 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
   ggplot(aes(x=satecon, y=prop, fill = vote))+
-  labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2002-2018")+
   geom_bar(stat = "identity", position = "dodge")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
   facet_wrap(~country, nrow=3)+
