@@ -125,3 +125,5 @@ ess %>%
          y = "%", 
          title = "Comparing Political Participation Across\nEuropean Democracies (%)", 
          caption = "Source: European Social Survey")
+
+
