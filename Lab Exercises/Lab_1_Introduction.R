@@ -9,7 +9,9 @@
 # This is a programming-based environment, but I've written all of the code for you.
 #All you need to do is run it.
 
-#Let's start by looking at the data. Run the following line:
+#Before we look at the data, we need to do a few things to set up the lab project:
+
+install.packages("tidyverse")
 
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
@@ -106,6 +108,33 @@ View(ess)
 # Let's look at voting for the radical right
 
           ess %>% filter(!is.na(right)) %>% count(right) %>% mutate('%' = round(n/sum(n)*100, digits=1))
+
+# What if we compared a lot of forms across countries:
+
+ess %>% 
+  drop_na() %>% 
+  pivot_longer((vote1:demo), names_to = "mode", values_to = "value") %>% 
+  group_by(cntry, mode) %>% 
+  count(value) %>% 
+  mutate(percent = n/sum(n)*100) %>% 
+  filter(value==str_remove(value, "not")) %>% 
+  mutate(value = fct_reorder(value, percent)) %>% 
+  ggplot(aes(reorder(value, percent), percent))+
+  geom_col(fill="steelblue")+
+  facet_wrap(~cntry, scales = "free_x")+
+  coord_flip()+
+  theme_minimal()+
+  scale_x_discrete(labels = c("party worker", 
+                               "demonstrated", 
+                              "worn badge", 
+                              "contacted", 
+                              "petitioned",
+                              "voted"))+
+  labs(x="", 
+       y = "%", 
+       title = "Comparing Political Participation Across\nEuropean Democracies (%)", 
+       caption = "Source: European Social Survey")
+
 
 
 
