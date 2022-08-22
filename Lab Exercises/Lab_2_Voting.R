@@ -1,4 +1,5 @@
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 # Exercise 1: Let's look at voting#
@@ -6,15 +7,19 @@ options(warn = -1)
 
 ess %>% filter(!is.na(vote)) %>% count(vote) %>%
   mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Electoral Turnout in European Democracies",
-  col.names = c('voted', 'N', '%'), align="lccc")
+  kbl(caption = "Electoral Turnout in European Democracies",
+  col.names = c('voted', 'N', '%'), align="lccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 # How does this vary by country?#
 
 ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   count(vote) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Electoral Turnout in European Democracies",
-  col.names = c('Country', 'Voted', 'N', '%'), align="cccc")
+  kbl(caption = "Electoral Turnout in European Democracies",
+  col.names = c('Country', 'Voted', 'N', '%'), align="cccc")%>% 
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
 
 # We can present this graphically to make it clearer#
 ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
@@ -47,8 +52,10 @@ ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
 
 ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% mutate("%" =n/sum(n)*100) %>%
-  knitr::kable("pandoc", caption = "Education and Electoral Turnout",
-  col.names = c('Education', 'Voted', 'N', '%'), align="ccccc", digits=1)
+  kbl(caption = "Education and Electoral Turnout",
+  col.names = c('Education', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
 
 # We can graph the relationship
 
@@ -82,8 +89,10 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop= n /sum(n)*100) %>%
-  knitr::kable("pandoc", caption = "Perceptions of the Economy and Electoral Turnout",
-  col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)
+  kbl("pandoc", caption = "Perceptions of the Economy and Electoral Turnout",
+  col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
 
 # We can graph this relationship
 
@@ -168,13 +177,15 @@ mutate(percent = round(n/sum(n)*100, digits = 1))
 
 left_join(a, b, by = "generation") %>% 
 select(-c(n.x, n.y, vote)) %>% 
-knitr::kable("pandoc", 
+kbl("pandoc", 
              caption = "Percentage of Age within Sample and Percentage of Age Cohort amongst Voters",
              col.names = c('Generation', 
                            'Percentage Within Sample', 
                            'Percentage Within Voters'), 
              align="ccc") %>% 
-print()
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
+
 rm(a,b)
 
 # Three questions to conclude with:
