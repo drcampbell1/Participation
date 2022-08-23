@@ -40,8 +40,8 @@ ess %>% group_by(country) %>% filter(!is.na(party)) %>%
   geom_col()+
   labs(x="", y="", title="Figure 1: Worked for Party by Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+ 
 
 # How does the age of the population differ from that of workers of political parties?
 
@@ -84,9 +84,8 @@ ess %>% group_by(educat) %>% filter(!is.na(party), !is.na(educat)) %>%
        geom_col()+
        labs(x="", y="", title="Figure 2: Worked for Party by Education", caption="ESS 2002-2018")+
        scale_y_continuous(labels=scales::percent)+
-       theme_bw()+
-       guides(fill=FALSE)
-
+       theme_bw()
+       
 ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!party=="not worked") %>%
@@ -96,7 +95,6 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   labs(x="", y="", title="Figure 3: Worked for Party by Education and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
-  guides(fill=FALSE)+
   scale_x_discrete(labels=c("Basic" = "HS", "University degree" = "Uni", "postgrad" = "pg"))
 
 
@@ -109,8 +107,8 @@ ess %>% group_by(satecon) %>% filter(!is.na(party), !is.na(satecon)) %>%
   geom_col()+
   labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 ess %>% group_by(satecon, country) %>% filter(!is.na(party), !is.na(satecon)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
@@ -121,7 +119,6 @@ ess %>% group_by(satecon, country) %>% filter(!is.na(party), !is.na(satecon)) %>
   labs(x="", y="", title="Figure 5: Worked for Party by Economic Optimism and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
-  guides(fill=FALSE)+
   scale_x_discrete(labels=c("dissatisfied" = "dis", "neither dissatisfied nor satisfied" = "neither", "satisfied" = "sat"))
 
 rm(a,b,c,d)
