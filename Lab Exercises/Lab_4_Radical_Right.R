@@ -167,4 +167,6 @@ ess %>% group_by(immdeth, country) %>% filter(!is.na(right), !is.na(immdeth)) %>
   theme_bw()+
   guides(fill=FALSE)
 
+rm(a,b,c,d)
+
 # What can we conclude about voters for the radical right?
