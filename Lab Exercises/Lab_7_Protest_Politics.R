@@ -3,10 +3,8 @@
 # These are important because people may show their support for a group or cause by signing a public
 # petition supporting it, or they may boycott products for political or ethical reasons.
 
-
-ESS <- foreign::read.dta("data/ESS.dta", convert.factors=TRUE)
-attach(ESS)
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 # Question 1: How common is petitioning in European democracies?
