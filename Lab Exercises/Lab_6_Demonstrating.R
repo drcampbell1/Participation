@@ -91,30 +91,32 @@ ess %>% group_by(unemp) %>% filter(!is.na(demo), !is.na(unemp)) %>%
 # Question 2: Do demonstrators participate?
 
 ess %>% filter(!is.na(demo), !is.na(vote)) %>%
-  group_by(demo) %>% count(vote1) %>%
+  group_by(demo) %>% count(vote) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!vote == "did not vote") %>%
   kbl(caption = "Demonstrating and Voting",
   col.names = c('Demonstrating', 'Voting', 'N', 'Percentage'),
-  digits=2, align="cccc") %>% print()
+  digits=2, align="cccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
-ess %>% filter(!is.na(demo), !is.na(vote1)) %>%
-  group_by(demo, country) %>% count(vote1) %>%
+ess %>% filter(!is.na(demo), !is.na(vote)) %>%
+  group_by(demo, country) %>% count(vote) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!vote == "did not vote") %>%
   ggplot(aes(x=demo, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
   labs(x="", y="%", title="Figure 6: Demonstrating and Voting by Country", caption="Source: ESS 2002-2018")+
   theme_bw()+
-  facet_grid(~country)+
-  guides(fill=FALSE)
+  facet_wrap(~country, nrow = 3)
+
 
  # Petitioning 
 
 ess %>% filter(!is.na(demo), !is.na(petit)) %>%
   group_by(demo) %>% count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!petit == "not signed petition") %>%
+  filter(!petit == "not signed") %>%
   kbl(caption = "Demonstrating and Petition",
   col.names = c('Demonstrating', 'Petition', 'N', 'Percentage'),
   digits=2, align="cccc") %>%
@@ -131,8 +133,8 @@ ess %>% filter(!is.na(demo), !is.na(petit)) %>%
   geom_bar(stat="identity", position = "dodge")+
   labs(x="", y="%", title="Figure 7: Petitioning by Socialising and Country", caption="ess 2016")+
   theme_bw()+
-  facet_grid(~country)+
-  guides(fill=FALSE)
+  facet_wrap(~country, nrow = 3)
+  
 
 # Contacting by Demonstrating
 
@@ -142,8 +144,9 @@ ess %>% filter(!is.na(demo), !is.na(contact)) %>%
   filter(!contact == "have not contacted") %>%
   kbl(caption = "Contacting and Petition",
   col.names = c('Demonstrating', 'Contacting', 'N', 'Percentage'),
-  digits=2, align="cccc") %>% print()
-
+  digits=2, align="cccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 # Contacting across countries by demonstrating
 
@@ -155,8 +158,8 @@ ess %>% filter(!is.na(demo), !is.na(contact)) %>%
   geom_bar(stat="identity", position = "dodge")+
   labs(x="", y="%", title="Figure 9: Contacting by Socialising and Country", caption="Source: ESS 2002-2016")+
   theme_bw()+
-  facet_grid(~country)+
-  guides(fill=FALSE)
+  facet_wrap(~country, nrow = 3)
+
 
 # So what can we conclude overall about demonstrators? Does it look like it is a small group of people who demonstrate
 # or a more homogenous section of the population? 
