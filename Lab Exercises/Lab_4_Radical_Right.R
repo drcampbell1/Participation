@@ -17,7 +17,7 @@ ess %>% filter(!is.na(right)) %>% count(right) %>%
 
 ess %>% group_by(country) %>% filter(!is.na(right)) %>%
      count(right) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>% filter(!right =="did not vote") %>% 
-     kbl("pandoc", caption = "Comparing Voting for Radical Right in European Democracies",
+     kbl(caption = "Comparing Voting for Radical Right in European Democracies",
      col.names = c('Country', 'Voted Radical Right', 'N', '%'), align="cccc")%>%
      kable_classic_2(full_width=F, position= "left")%>%
      footnote(general = "Source: ESS 2002-2018")
@@ -62,6 +62,7 @@ left_join(a, b, by = "country") %>% select(-right) %>%
 
 c <- ess %>%
   group_by(country) %>%
+  filter(!is.na(gender))%>%
   count(gender) %>%
   mutate(perc_pop=n/sum(n)*100)
 
@@ -157,7 +158,7 @@ ess %>% group_by(immdeth) %>% filter(!is.na(right), !is.na(immdeth)) %>%
 ess %>% group_by(immdeth, country) %>% filter(!is.na(right), !is.na(immdeth)) %>%
   count(right) %>% 
   mutate(prop=prop.table(n*100)) %>%
-  filter(!right=="no") %>%
+  filter(!right=="did not vote") %>%
   ggplot(aes(x=immdeth, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow=3)+
