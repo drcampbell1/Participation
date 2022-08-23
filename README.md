@@ -4,7 +4,7 @@ In this module, I will run seven interactive sessions which mimic the flow of ho
 
 ### What technology will we use to do this? 
 
-We are going to use an online cloud based environment named [RStudio Cloud] (https://rstudio.cloud)
+We are going to use an online cloud based environment named [RStudio Cloud](https://rstudio.cloud)
 
 RStudio is an open-source programme for analysing data and is one of the leading programming languages. You can find more information about it [here](https://www.rstudio.com). Importantly, though, you don't need to be a computer programmer; I've written the code for you and will show you how to execute it. 
 
