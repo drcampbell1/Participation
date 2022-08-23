@@ -12,10 +12,12 @@
 #Before we look at the data, we need to do a few things to set up the lab project:
 
 install.packages("tidyverse")
+install.packages("tidytext")
 install.packages("kableExtra")
 
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
+library(tidytext)
 options(warn = -1)
 
 #Introduction to the data#
@@ -43,7 +45,7 @@ options(warn = -1)
 
                         # In total we have 78473 observations - or 78473 people gave us answers to our questions.
 
-ess %>% count(country, sort=TRUE)
+ess %>% count(country, year)
 
 # We also have time which enables us to compare participation is changing. We have data from five different time points covering a 16 year period: 
 
@@ -113,18 +115,26 @@ View(ess)
 # What if we compared a lot of forms across countries:
 
 ess %>% 
-    pivot_longer((vote:petit), names_to = "mode", values_to = "value") %>% 
-    select(country, mode, value) %>% group_by(country, mode) %>% filter(!is.na(value)) %>% count(value) %>% mutate(percent = n/sum(n)*100) %>% 
-    filter(value==str_remove(value, "not")) %>% filter(value==str_remove(value, "did not")) %>%
-    mutate(value = fct_reorder(value, percent)) %>% 
-    ggplot(aes(reorder(value, percent), percent))+
-    geom_col(fill="steelblue")+
-    facet_wrap(~country, scales = "free_x")+
-    coord_flip()+
-    theme_minimal()+
-    labs(x="", 
-         y = "%", 
-         title = "Comparing Political Participation Across\nEuropean Democracies (%)", 
-         caption = "Source: European Social Survey")
+  drop_na() %>% 
+  pivot_longer((vote:petit), 
+               names_to = "mode", 
+               values_to = "value") %>% 
+  group_by(country, mode) %>% 
+  count(value) %>% 
+  mutate(percent = n/sum(n)*100) %>% 
+  filter(value == str_remove(value, "not")) %>% 
+  mutate(value=str_replace(value, "have", ""), 
+         value = reorder_within(value, percent, country)) %>% 
+  ggplot(aes(reorder(value, percent), percent))+
+  geom_col(fill= "steelblue")+
+  facet_wrap(~country, scales = "free")+
+  coord_flip()+
+  theme_minimal()+
+  scale_x_reordered()+
+  labs(x = "", y = "%", 
+       title = "Figure 1:Comparing Political Participation in European Democracies",
+       subtitle = "(Political Styles that Differ)",
+       caption = "Source: ESS 2002-2018")
+
 
 
