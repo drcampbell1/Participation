@@ -12,7 +12,7 @@ options(warn = -1)
 ess %>% filter(!is.na(petit)) %>% count(petit) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
   kbl(caption = "petiting in European Democracies",
-               col.names = c('petiting', 'N', '%'), align="lcc")%>%
+               col.names = c('Petitioning', 'N', '%'), align="lcc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
 
@@ -34,8 +34,7 @@ ess %>% group_by(country) %>% filter(!is.na(petit)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 1: petiting by Country", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
 
 # Question 2: How common is boycotting in European democracies?
 
@@ -64,8 +63,7 @@ ess %>% group_by(country) %>% filter(!is.na(boyct)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 2: Boycotting by Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
 
 
 # Section 2: Who takes part in these forms of participation?
@@ -79,9 +77,8 @@ ess %>% group_by(agecat) %>% filter(!is.na(petit), !is.na(agecat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 3: petiting by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+ 
 # What is the age profile of people who boycott?
 
 ess %>% group_by(agecat) %>% filter(!is.na(boyct), !is.na(agecat)) %>%
@@ -89,11 +86,9 @@ ess %>% group_by(agecat) %>% filter(!is.na(boyct), !is.na(agecat)) %>%
   filter(!boyct=="not boycotted") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 4: Boycotting by Age Category", caption="ess 2016")+
+  labs(x="", y="", title="Figure 4: Boycotting by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
 
 
 # What is the education profile of petitioners?
@@ -105,9 +100,8 @@ ess %>% group_by(educat) %>% filter(!is.na(petit), !is.na(educat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 5: Petitioning by Education", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+ 
 # What is the education profile of people who boycott?
 
 ess %>% group_by(educat) %>% filter(!is.na(boyct), !is.na(educat)) %>%
@@ -117,10 +111,8 @@ ess %>% group_by(educat) %>% filter(!is.na(boyct), !is.na(educat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 6: Boycotting by Education", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
-
+  theme_bw()
+  
 # What is the gender profile of petiters?
 
 # Males only?
@@ -132,8 +124,7 @@ ess %>% group_by(gender) %>% filter(!is.na(petit), !is.na(gender)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 7: petiting by Gender", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
 
 ess %>% group_by(gender) %>% filter(!is.na(boyct), !is.na(gender)) %>%
   count(boyct) %>% mutate(prop=prop.table(n*100)) %>%
@@ -142,8 +133,7 @@ ess %>% group_by(gender) %>% filter(!is.na(boyct), !is.na(gender)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 8: Boycotting by Gender", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
 
 # What, then, might you conclude about protest politics on the basis of what we've looked at here?
 
