@@ -4,9 +4,8 @@
 
 # Let's start by looking at the data:
 
-ESS <- foreign::read.dta("data/ESS.dta", convert.factors=TRUE)
-attach(ESS)
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 # Question 1: How social are we?
@@ -14,16 +13,16 @@ options(warn = -1)
 # We're going to start by looking at the variable "social". This is a question asking how
 # frequently people met with their friends.
 
-ESS %>% filter(!is.na(social)) %>% count(social) %>%
+ess %>% filter(!is.na(social)) %>% count(social) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Socialise with Friends in European Democracies",
-  col.names = c('Socialise', 'N', '%'), align="lccc")
+  kbl("pandoc", caption = "Socialise with Friends in European Democracies",
+  col.names = c('Socialise', 'N', '%'), align="lccc")%>%
 
 # Fewer people socialise less than once a week, so let's find out how numerous the more socially active people
 # are in our countries. To do this I've created a new variable "socialise", which combines never/rare and 1-2 per month into one
 # category and 1 per week and more than once per week into one category.
 
-ESS %>% filter(!is.na(socialise)) %>% group_by(cntry) %>%
+ESS %>% filter(!is.na(socialise)) %>% group_by(country) %>%
               count(socialise) %>% mutate(percent = round(n/sum(n)*100, digits=1)) %>%
               knitr::kable("pandoc", caption = "Socialise with Friends in European Democracies",
               col.names = c('Country', 'Socialise', 'N', '%'), align="lcccc")
