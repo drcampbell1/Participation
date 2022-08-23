@@ -37,8 +37,8 @@ ess %>% group_by(country) %>% filter(!is.na(demo)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 1: Demonstrating by Country", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # What is the age pattern of the demonstrators?
 
@@ -49,8 +49,8 @@ ess %>% group_by(agecat) %>% filter(!is.na(demo), !is.na(agecat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 2: Demonstrating by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # What is the education profile of demonstrators?
 
@@ -61,8 +61,8 @@ ess %>% group_by(educat) %>% filter(!is.na(demo), !is.na(educat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 3: Demonstrating by Education", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # Males only?
 
@@ -73,8 +73,8 @@ ess %>% group_by(gender) %>% filter(!is.na(demo), !is.na(gender)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 4: Demonstrating by Gender", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 ess %>% group_by(unemp) %>% filter(!is.na(demo), !is.na(unemp)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
@@ -83,8 +83,8 @@ ess %>% group_by(unemp) %>% filter(!is.na(demo), !is.na(unemp)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 5: Demonstrating by Unemployed", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # What does all of the above tell us about demonstrators?
 
