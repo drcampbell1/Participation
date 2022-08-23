@@ -11,7 +11,7 @@ options(warn = -1)
 
 ess %>% filter(!is.na(petit)) %>% count(petit) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  kbl(caption = "petiting in European Democracies",
+  kbl(caption = "Petitioning in European Democracies",
                col.names = c('Petitioning', 'N', '%'), align="lcc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -20,7 +20,7 @@ ess %>% filter(!is.na(petit)) %>% count(petit) %>%
 
 ess %>% filter(!is.na(petit)) %>% group_by(country) %>% count(petit) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  kbl(caption = "petiting in European Democracies",
+  kbl(caption = "Petitioning in European Democracies",
                col.names = c('Country', 'petiting', 'N', '%'), align="lccc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -45,11 +45,11 @@ ess %>% filter(!is.na(boyct)) %>% count(boyct) %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
 
-# Let's break this down by the six countries for which we have data:
+# Let's break this down by the countries for which we have data:
 
 ess %>% filter(!is.na(boyct)) %>% group_by(country) %>% count(boyct) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  kbl("pandoc", caption = "Boycotting in European Democracies",
+  kbl(caption = "Boycotting in European Democracies",
                col.names = c('Country', 'Boycotting', 'N', '%'), align="lccc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -75,7 +75,7 @@ ess %>% group_by(agecat) %>% filter(!is.na(petit), !is.na(agecat)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 3: petiting by Age Category", caption="Source: ESS 2002-2018")+
+  labs(x="", y="", title="Figure 3: Petitioning by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
@@ -122,7 +122,7 @@ ess %>% group_by(gender) %>% filter(!is.na(petit), !is.na(gender)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=gender, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 7: petiting by Gender", caption="ess 2016")+
+  labs(x="", y="", title="Figure 7: Petitioning by Gender", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
