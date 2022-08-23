@@ -15,7 +15,7 @@ options(warn = -1)
 
 ess %>% filter(!is.na(strust)) %>% count(strust) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  kbl(caption = "Socialise with Friends in European Democracies",
+  kbl(caption = "Social Trust in European Democracies",
   col.names = c('Social Trust', 'N', '%'), align="lccc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -25,7 +25,7 @@ ess %>% filter(!is.na(strust)) %>% count(strust) %>%
 
 ess %>% filter(!is.na(strust)) %>% group_by(country) %>%
               count(strust) %>% mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-              kbl(caption = "Socialise with Friends in European Democracies",
+              kbl(caption = "Social Trust in European Democracies",
               col.names = c('Country', 'Socialise', 'N', '%'), align="lcccc") %>%
               kable_classic_2(full_width=F, position= "left")%>%
               footnote(general = "Source: ESS 2002-2018")
@@ -35,7 +35,7 @@ ess %>% filter(!is.na(strust)) %>% group_by(country) %>%
 ess %>% group_by(country) %>% filter(!is.na(strust)) %>%
   count(strust) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
-  ggplot(aes(x=reorder(cntry, -prop), y=prop)) +
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 1: Social Trust by Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
@@ -116,7 +116,7 @@ ess %>% filter(!is.na(strust), !is.na(vote)) %>%
   filter(!vote == "did not vote") %>%
   ggplot(aes(x=strust, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 6: Voting by Socialising and Country", caption="ESS 2016")+
+  labs(x="", y="%", title="Figure 6: Voting by Social Trust and Country", caption="ESS 2016")+
   theme_bw()+
   facet_wrap(~country, nrow= 3)
 
@@ -126,8 +126,8 @@ ess %>% filter(!is.na(strust), !is.na(contact)) %>%
   group_by(strust) %>% count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!contact == "not contacted") %>%
-  kbl(caption = "Socialising and Contacting Politicians",
-  col.names = c('Socialising', 'Contacting', 'N', 'Percentage'),
+  kbl(caption = "Social Trust and Contacting Politicians",
+  col.names = c('Social Trust', 'Contacting', 'N', 'Percentage'),
   digits=2, align="cccc") %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -141,7 +141,7 @@ ess %>% filter(!is.na(strust), !is.na(contact)) %>%
   filter(!contact == "not contacted") %>%
   ggplot(aes(x=strust, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 7: Contacting by Socialising and Country", caption="Source: ESS 2002-2018")+
+  labs(x="", y="%", title="Figure 7: Contacting by Social Trust and Country", caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
 
@@ -151,8 +151,8 @@ ess %>% filter(!is.na(strust), !is.na(petit)) %>%
   group_by(strust) %>% count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!petit == "not signed") %>%
-  kbl(caption = "Socialising and Petition",
-  col.names = c('Socialising', 'Petition', 'N', 'Percentage'),
+  kbl(caption = "Social Trust and Petition",
+  col.names = c('Social Trust', 'Petition', 'N', 'Percentage'),
   digits=2, align="cccc")%>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
@@ -165,7 +165,7 @@ ess %>% filter(!is.na(strust), !is.na(petit)) %>%
   filter(!petit == "not signed") %>%
   ggplot(aes(x=strust, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 8: Petitioning by Socialising and Country", caption="Source: ESS 2002-2018")+
+  labs(x="", y="%", title="Figure 8: Petitioning by Social Trust and Country", caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
 
@@ -176,8 +176,8 @@ ess %>% filter(!is.na(strust), !is.na(demo)) %>%
   group_by(strust) %>% count(demo) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!demo == "not demonstrated") %>%
-  kbl(caption = "Socialising and Demonstrating",
-  col.names = c('Socialising', 'Demonstrating', 'N', 'Percentage'),
+  kbl(caption = "Social Trust and Demonstrating",
+  col.names = c('Social Trust', 'Demonstrating', 'N', 'Percentage'),
   digits=2, align="cccc") %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
