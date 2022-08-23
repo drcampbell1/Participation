@@ -129,7 +129,7 @@ ess %>% filter(!is.na(demo), !is.na(petit)) %>%
 ess %>% filter(!is.na(demo), !is.na(petit)) %>%
   group_by(demo, country) %>% count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!petition == "not signed") %>%
+  filter(!petit == "not signed") %>%
   ggplot(aes(x=demo, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
   labs(x="", y="%", title="Figure 7: Petitioning by Socialising and Country", caption="ess 2016")+
