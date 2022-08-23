@@ -89,7 +89,7 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   count(vote) %>% mutate(prop= n /sum(n)*100) %>%
-  kbl("pandoc", caption = "Perceptions of the Economy and Electoral Turnout",
+  kbl(caption = "Perceptions of the Economy and Electoral Turnout",
   col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
@@ -129,8 +129,10 @@ ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop= n / sum(n)*100) %>%
-  knitr::kable("pandoc", caption = "Trust in Politics and Electoral Turnout",
-  col.names=c('Trust', 'Voted', 'N', '%'), align="ccccc", digits=1)
+  kbl(caption = "Trust in Politics and Electoral Turnout",
+  col.names=c('Trust', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
 
 ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
   count(vote) %>% mutate(prop=prop.table(n*100)) %>%
@@ -177,8 +179,7 @@ mutate(percent = round(n/sum(n)*100, digits = 1))
 
 left_join(a, b, by = "generation") %>% 
 select(-c(n.x, n.y, vote)) %>% 
-kbl("pandoc", 
-             caption = "Percentage of Age within Sample and Percentage of Age Cohort amongst Voters",
+kbl(caption = "Percentage of Age within Sample and Percentage of Age Cohort amongst Voters",
              col.names = c('Generation', 
                            'Percentage Within Sample', 
                            'Percentage Within Voters'), 
