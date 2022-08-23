@@ -29,8 +29,8 @@ ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 1: Turnout by Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+ 
 
 # What's changed over time? 
 
