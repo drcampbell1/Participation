@@ -39,8 +39,8 @@ ess %>% group_by(country) %>% filter(!is.na(strust)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 1: Social Trust by Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # Has anything changed over time?
 
@@ -65,8 +65,8 @@ ess %>% group_by(agecat) %>% filter(!is.na(strust), !is.na(agecat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 3: Social Trust by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 
 # Do the figures differ by Education
@@ -78,8 +78,8 @@ ess %>% group_by(educat) %>% filter(!is.na(strust), !is.na(educat)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 4: Social Trust and Education", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # And Gender
 ess %>% group_by(gender) %>% filter(!is.na(strust), !is.na(gender)) %>%
@@ -89,8 +89,8 @@ ess %>% group_by(gender) %>% filter(!is.na(strust), !is.na(gender)) %>%
   geom_bar(stat="identity")+
   labs(x="", y="", title="Figure 5: Social Trust and Gender", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 # Section 2: Does this influence participation?
 
