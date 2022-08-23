@@ -5,79 +5,82 @@
 
 # This will become clear as we look at the data.
 
-ESS <- foreign::read.dta("data/ESS.dta", convert.factors=TRUE)
-attach(ESS)
 library(tidyverse)
 options(warn = -1)
 
 # Question 1: How common is demonstrating in European democracies?
 
-ESS %>% filter(!is.na(demo)) %>% count(demo) %>%
+ess %>% filter(!is.na(demo)) %>% count(demo) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Demonstrating in European Democracies",
-  col.names = c('Demonstrating', 'N', '%'), align="lcc")
+  kbl(caption = "Demonstrating in European Democracies",
+  col.names = c('Demonstrating', 'N', '%'), align="lcc")%>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
+
 
 # Let's break this down by the six countries for which we have data:
 
-ESS %>% filter(!is.na(demo)) %>% group_by(cntry) %>% count(demo) %>%
+ess %>% filter(!is.na(demo)) %>% group_by(country) %>% count(demo) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
-  knitr::kable("pandoc", caption = "Demonstrating in European Democracies",
-  col.names = c('Country', 'Demonstrating', 'N', '%'), align="lccc")
+  kbl(caption = "Demonstrating in European Democracies",
+  col.names = c('Country', 'Demonstrating', 'N', '%'), align="lccc")%>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 # We can graph this to make it clear
 
-ESS %>% group_by(cntry) %>% filter(!is.na(demo)) %>%
+ess %>% group_by(country) %>% filter(!is.na(demo)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!demo=="have not demonstrated") %>%
-  ggplot(aes(x=reorder(cntry, -prop), y=prop)) +
+  filter(!demo=="not demonstrated") %>%
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 1: Demonstrating by Country", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 1: Demonstrating by Country", caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
 
 # What is the age pattern of the demonstrators?
 
-ESS %>% group_by(agecat) %>% filter(!is.na(demo), !is.na(agecat)) %>%
+ess %>% group_by(agecat) %>% filter(!is.na(demo), !is.na(agecat)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!demo=="have not demonstrated") %>%
+  filter(!demo=="not demonstrated") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 2: Demonstrating by Age Category", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 2: Demonstrating by Age Category", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
 
 # What is the education profile of demonstrators?
 
-ESS %>% group_by(educat) %>% filter(!is.na(demo), !is.na(educat)) %>%
+ess %>% group_by(educat) %>% filter(!is.na(demo), !is.na(educat)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!demo=="have not demonstrated") %>%
+  filter(!demo=="not demonstrated") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 3: Demonstrating by Education", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 3: Demonstrating by Education", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
 
 # Males only?
 
-ESS %>% group_by(gender) %>% filter(!is.na(demo), !is.na(gender)) %>%
+ess %>% group_by(gender) %>% filter(!is.na(demo), !is.na(gender)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!demo=="have not demonstrated") %>%
+  filter(!demo=="not demonstrated") %>%
   ggplot(aes(x=gender, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 4: Demonstrating by Gender", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 4: Demonstrating by Gender", caption="ess 2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
 
-ESS %>% group_by(uemp) %>% filter(!is.na(demo), !is.na(uemp)) %>%
+ess %>% group_by(unemp) %>% filter(!is.na(demo), !is.na(unemp)) %>%
   count(demo) %>% mutate(prop=prop.table(n*100)) %>%
-  filter(!demo=="have not demonstrated") %>%
-  ggplot(aes(x=uemp, y=prop)) +
+  filter(!demo=="not demonstrated") %>%
+  ggplot(aes(x=unemp, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 5: Demonstrating by Unemployed", caption="ESS 2016")+
+  labs(x="", y="", title="Figure 5: Demonstrating by Unemployed", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   guides(fill=FALSE)
@@ -87,70 +90,72 @@ ESS %>% group_by(uemp) %>% filter(!is.na(demo), !is.na(uemp)) %>%
 
 # Question 2: Do demonstrators participate?
 
-ESS %>% filter(!is.na(demo), !is.na(vote1)) %>%
+ess %>% filter(!is.na(demo), !is.na(vote)) %>%
   group_by(demo) %>% count(vote1) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!vote1 == "did not vote") %>%
-  knitr::kable("pandoc", caption = "Demonstrating and Voting",
+  filter(!vote == "did not vote") %>%
+  kbl(caption = "Demonstrating and Voting",
   col.names = c('Demonstrating', 'Voting', 'N', 'Percentage'),
   digits=2, align="cccc") %>% print()
 
-ESS %>% filter(!is.na(demo), !is.na(vote1)) %>%
-  group_by(demo, cntry) %>% count(vote1) %>%
+ess %>% filter(!is.na(demo), !is.na(vote1)) %>%
+  group_by(demo, country) %>% count(vote1) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!vote1 == "did not vote") %>%
+  filter(!vote == "did not vote") %>%
   ggplot(aes(x=demo, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 6: Demonstrating and Voting by Country", caption="ESS 2016")+
+  labs(x="", y="%", title="Figure 6: Demonstrating and Voting by Country", caption="Source: ESS 2002-2018")+
   theme_bw()+
-  facet_grid(~cntry)+
+  facet_grid(~country)+
   guides(fill=FALSE)
 
  # Petitioning 
 
-ESS %>% filter(!is.na(demo), !is.na(petition)) %>%
-  group_by(demo) %>% count(petition) %>%
+ess %>% filter(!is.na(demo), !is.na(petit)) %>%
+  group_by(demo) %>% count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!petition == "have not signed petition") %>%
-  knitr::kable("pandoc", caption = "Demonstrating and Petition",
+  filter(!petit == "not signed petition") %>%
+  kbl(caption = "Demonstrating and Petition",
   col.names = c('Demonstrating', 'Petition', 'N', 'Percentage'),
-  digits=2, align="cccc") %>% print()
+  digits=2, align="cccc") %>%
+  kable_classic_2(full_width=F, position= "left")%>%
+  footnote(general = "Source: ESS 2002-2018")
 
 # Petitioning across countries by demonstrating
 
-ESS %>% filter(!is.na(demo), !is.na(petition)) %>%
-  group_by(demo, cntry) %>% count(petition) %>%
+ess %>% filter(!is.na(demo), !is.na(petit)) %>%
+  group_by(demo, country) %>% count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!petition == "have not signed petition") %>%
+  filter(!petition == "not signed") %>%
   ggplot(aes(x=demo, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 8: Petitioning by Socialising and Country", caption="ESS 2016")+
+  labs(x="", y="%", title="Figure 7: Petitioning by Socialising and Country", caption="ess 2016")+
   theme_bw()+
-  facet_grid(~cntry)+
+  facet_grid(~country)+
   guides(fill=FALSE)
 
 # Contacting by Demonstrating
 
-ESS %>% filter(!is.na(demo), !is.na(contact)) %>%
+ess %>% filter(!is.na(demo), !is.na(contact)) %>%
   group_by(demo) %>% count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!contact == "have not contacted") %>%
-  knitr::kable("pandoc", caption = "Contacting and Petition",
+  kbl(caption = "Contacting and Petition",
   col.names = c('Demonstrating', 'Contacting', 'N', 'Percentage'),
   digits=2, align="cccc") %>% print()
 
 
 # Contacting across countries by demonstrating
 
-ESS %>% filter(!is.na(demo), !is.na(contact)) %>%
-  group_by(demo, cntry) %>% count(contact) %>%
+ess %>% filter(!is.na(demo), !is.na(contact)) %>%
+  group_by(demo, country) %>% count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
-  filter(!contact == "have not contacted") %>%
+  filter(!contact == "not contacted") %>%
   ggplot(aes(x=demo, y=prop)) +
   geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 9: Contacting by Socialising and Country", caption="ESS 2016")+
+  labs(x="", y="%", title="Figure 9: Contacting by Socialising and Country", caption="Source: ESS 2002-2016")+
   theme_bw()+
-  facet_grid(~cntry)+
+  facet_grid(~country)+
   guides(fill=FALSE)
 
 # So what can we conclude overall about demonstrators? Does it look like it is a small group of people who demonstrate
