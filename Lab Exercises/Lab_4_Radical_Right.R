@@ -32,8 +32,7 @@ ess %>% group_by(country) %>% filter(!is.na(right)) %>%
   geom_col()+
   labs(x="", y="", title="Figure 1: Voted for Radical Right Party by Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
 
 
 # What is the age profile of voters for the radical right?
@@ -94,8 +93,8 @@ ess %>% group_by(educat) %>% filter(!is.na(right), !is.na(educat)) %>%
   geom_col()+
   labs(x="", y="", title="Figure 2: Voting for the Radical Right by Education", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+ 
 
 ess %>% group_by(educat, country) %>% 
 filter(!is.na(right), !is.na(educat)) %>%
@@ -107,9 +106,8 @@ filter(!is.na(right), !is.na(educat)) %>%
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 3: Voting for the Radical Right by Education and Country", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+ 
 #Let's look at what voters of the radical right think about government?
 
 #Do voters of the radical right trust government?
@@ -123,9 +121,8 @@ ess %>% group_by(ptrust) %>%
   geom_col()+
   labs(x="", y="", title="Figure 4: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+  
 ess %>% group_by(ptrust, country) %>% 
   filter(!is.na(right), !is.na(ptrust)) %>%
   count(right) %>% 
@@ -136,9 +133,8 @@ ess %>% group_by(ptrust, country) %>%
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 5: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+  
 
 # Attitudes to Immigrants of a Different Ethnicity
 
@@ -152,9 +148,8 @@ ess %>% group_by(immdeth) %>% filter(!is.na(right), !is.na(immdeth)) %>%
        subtitle = "(different ethnicity)",
        caption="ESS 2016")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
-
+  theme_bw()
+  
 ess %>% group_by(immdeth, country) %>% filter(!is.na(right), !is.na(immdeth)) %>%
   count(right) %>% 
   mutate(prop=prop.table(n*100)) %>%
@@ -164,8 +159,8 @@ ess %>% group_by(immdeth, country) %>% filter(!is.na(right), !is.na(immdeth)) %>
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 7: Attitudes to Immigration and Voting for the Radical Right", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  guides(fill=FALSE)
+  theme_bw()
+  
 
 rm(a,b,c,d)
 
