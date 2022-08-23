@@ -135,7 +135,7 @@ ess %>% group_by(gender) %>% filter(!is.na(boyct), !is.na(gender)) %>%
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
-# What, then, might you conclude about protest politics on the basis of what we've looked at here?
+## What, then, might you conclude about protest politics on the basis of what we've looked at here?
 
 # Do very few people take part?
 
