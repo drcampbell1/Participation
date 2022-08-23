@@ -6,6 +6,7 @@
 # This will become clear as we look at the data.
 
 library(tidyverse)
+library(kableExtra)
 options(warn = -1)
 
 # Question 1: How common is demonstrating in European democracies?
