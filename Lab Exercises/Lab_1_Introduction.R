@@ -115,11 +115,11 @@ View(ess)
 # What if we compared a lot of forms across countries:
 
 ess %>% 
-  drop_na() %>% 
   pivot_longer((vote:petit), 
                names_to = "mode", 
                values_to = "value") %>% 
-  group_by(country, mode) %>% 
+  group_by(country, mode) %>%
+  filter(!is.na(value)) %>% 
   count(value) %>% 
   mutate(percent = n/sum(n)*100) %>% 
   filter(value == str_remove(value, "not")) %>% 
@@ -135,6 +135,5 @@ ess %>%
        title = "Figure 1:Comparing Political Participation in European Democracies",
        subtitle = "(Political Styles that Differ)",
        caption = "Source: ESS 2002-2018")
-
 
 
