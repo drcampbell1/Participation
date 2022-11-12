@@ -34,7 +34,7 @@ If you find that you want to build your skills, there are lots of resources for 
   
   - An introduction to [R](https://www.youtube.com/watch?v=lL0s1coNtRk)
   
-  - An introduction to R and the [Tidyverse] (https://www.youtube.com/watch?v=JtQfXY0lIzc)
+  - An introduction to R and the [Tidyverse](https://www.youtube.com/watch?v=JtQfXY0lIzc)
 - Books
   - Hadley Wickham and Garrett Grolemund (2017) *R for Data Science* O'Reilly. (https://r4ds.had.co.nz)
 
