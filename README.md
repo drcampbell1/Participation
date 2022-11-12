@@ -16,7 +16,7 @@ You can find out more about the survey [here](https://www.europeansocialsurvey.o
 
 ### Why are we using data?
 
-This is not a course on statistics and students do not need to have mathematical skills to complete the lab exercises. But surveys frequently include data on forms of political participation, and this can provide helpful, but qualified, answers to the questions guiding this module. Most commonly, these surveys come in cross-national form; i.e., they are collected in multiple countries simultaneously. This enables us to examine and compare levels of participation in regions within countries, and/or across countries. In doing this, the data contradict your assumptions. The lesson here is to be cautious about approaching this module with assumptions. Not everything that you think is happening is *actually* happening. Let the data guide you, but be critical of it too. 
+This is not a course on statistics and students do not need to have mathematical skills to complete the lab exercises. But surveys frequently include data on forms of political participation, and this can provide helpful, but qualified, answers to the central questions of this module. Most commonly, these surveys come in cross-national form; i.e., they are collected in multiple countries simultaneously. This enables us to compare levels of participation across countries. As these surveys are repeated, we can bring time into the analysis and examine how things have changed. In doing this, the data might contradict your assumptions. The lesson here is to be cautious. Not everything that you think is happening is *actually* happening. Let the data guide you, but be critical of it too. 
 
 ### Do I need to be able to programme? 
 
@@ -30,11 +30,11 @@ If you find that you want to build your skills, there are lots of resources for 
 
 - Presentations on YouTube
 
-  - How to install R and RStudio (https://www.youtube.com/watch?v=9-RrkJQQYqY)
+  - How to install R and [RStudio] (https://www.youtube.com/watch?v=9-RrkJQQYqY)
   
-  - An introduction to R: (https://www.youtube.com/watch?v=lL0s1coNtRk)
+  - An introduction to [R] (https://www.youtube.com/watch?v=lL0s1coNtRk)
   
-  - An introduction to R and the Tidyverse (https://www.youtube.com/watch?v=JtQfXY0lIzc)
+  - An introduction to R and the [Tidyverse] (https://www.youtube.com/watch?v=JtQfXY0lIzc)
 - Books
   - Hadley Wickham and Garrett Grolemund (2017) *R for Data Science* O'Reilly. (https://r4ds.had.co.nz)
 
