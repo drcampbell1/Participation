@@ -30,9 +30,9 @@ If you find that you want to build your skills, there are lots of resources for 
 
 - Presentations on YouTube
 
-  - How to install R and [RStudio] (https://www.youtube.com/watch?v=9-RrkJQQYqY)
+  - How to install R and [RStudio](https://www.youtube.com/watch?v=9-RrkJQQYqY)
   
-  - An introduction to [R] (https://www.youtube.com/watch?v=lL0s1coNtRk)
+  - An introduction to [R](https://www.youtube.com/watch?v=lL0s1coNtRk)
   
   - An introduction to R and the [Tidyverse] (https://www.youtube.com/watch?v=JtQfXY0lIzc)
 - Books
