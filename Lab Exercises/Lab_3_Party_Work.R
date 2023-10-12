@@ -60,7 +60,7 @@ c <- ess %>% group_by(country) %>%
   count(gender) %>%
   mutate(perc_pop=n/sum(n)*100)
 
-d <- ess %>% filter(party=="not worked") %>% 
+d <- ess %>% filter(party=="worked") %>% 
        group_by(country, gender) %>%
        count(party) %>% 
        group_by(country) %>% 
@@ -95,7 +95,7 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   labs(x="", y="", title="Figure 3: Worked for Party by Education and Country", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
-  scale_x_discrete(labels=c("Basic" = "HS", "University degree" = "Uni", "postgrad" = "pg"))
+  scale_x_discrete(labels=c("Basic" = "Basic", "HS" = "HS", "University degree" = "Uni", "postgrad" = "pg"))
 
 
 #Economically Optimistic Party Workers?
