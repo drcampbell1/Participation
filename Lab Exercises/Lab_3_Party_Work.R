@@ -98,28 +98,28 @@ ess %>% group_by(educat, country) %>% filter(!is.na(party), !is.na(educat)) %>%
   scale_x_discrete(labels=c("Basic" = "Basic", "HS" = "HS", "University degree" = "Uni", "postgrad" = "pg"))
 
 
-#Economically Optimistic Party Workers?
+#What about the income profile of those who work for parties?
 
-ess %>% group_by(satecon) %>% filter(!is.na(party), !is.na(satecon)) %>%
+ess %>% group_by(quin) %>% filter(!is.na(party), !is.na(quin)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!party=="not worked") %>%
-  ggplot(aes(x=satecon, y=prop)) +
+  ggplot(aes(x=quin, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 4: Worked for Party by Economic Optimism", caption="ESS 2002-2018")+
+  labs(x="", y="", title="Figure 2: Worked for Party by Income Quintile", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
-  
 
-ess %>% group_by(satecon, country) %>% filter(!is.na(party), !is.na(satecon)) %>%
+
+ess %>% group_by(quin, country) %>% filter(!is.na(party), !is.na(quin)) %>%
   count(party) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!party=="not worked") %>%
-  ggplot(aes(x=satecon, y=prop)) +
+  ggplot(aes(x=quin, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow = 3)+
-  labs(x="", y="", title="Figure 5: Worked for Party by Economic Optimism and Country", caption="ESS 2002-2018")+
+  labs(x="", y="", title="Figure 2: Worked for Party by Income Quintile", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  scale_x_discrete(labels=c("dissatisfied" = "dis", "neither dissatisfied nor satisfied" = "neither", "satisfied" = "sat"))
+  theme_bw()
+
 
 rm(a,b,c,d)
 
