@@ -148,6 +148,7 @@ ess %>% group_by(imdfetn) %>% filter(!is.na(right), !is.na(imdfetn)) %>%
        subtitle = "(different ethnicity)",
        caption="ESS 2016")+
   scale_y_continuous(labels=scales::percent)+
+  scale_x_continuous(breaks = c(1,2,3,4), labels=c("s_disagree", "disagree", "agree", "s_agree"))+
   theme_bw()
   
 ess %>% group_by(imdfetn, country) %>% filter(!is.na(right), !is.na(imdfetn)) %>%
@@ -159,6 +160,7 @@ ess %>% group_by(imdfetn, country) %>% filter(!is.na(right), !is.na(imdfetn)) %>
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 7: Attitudes to Immigration and Voting for the Radical Right", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
+  scale_x_continuous(breaks = c(1,2,3,4), labels=c("s_disagree", "disagree", "agree", "s_agree"))+
   theme_bw()
   
 
