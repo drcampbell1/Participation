@@ -138,10 +138,10 @@ ess %>% group_by(ptrust, country) %>%
 
 # Attitudes to Immigrants of a Different Ethnicity
 
-ess %>% group_by(immdeth) %>% filter(!is.na(right), !is.na(immdeth)) %>%
+ess %>% group_by(imdfetn) %>% filter(!is.na(right), !is.na(imdfetn)) %>%
   count(right) %>% mutate(prop=prop.table(n*100)) %>%
   filter(!right=="did not vote") %>%
-  ggplot(aes(x=immdeth, y=prop)) +
+  ggplot(aes(x=imdfetn, y=prop)) +
   geom_col()+
   labs(x="", y="", 
        title="Figure 6: Attitudes to Immigration and Voting for the Radical Right",
@@ -150,11 +150,11 @@ ess %>% group_by(immdeth) %>% filter(!is.na(right), !is.na(immdeth)) %>%
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
-ess %>% group_by(immdeth, country) %>% filter(!is.na(right), !is.na(immdeth)) %>%
+ess %>% group_by(imdfetn, country) %>% filter(!is.na(right), !is.na(imdfetn)) %>%
   count(right) %>% 
   mutate(prop=prop.table(n*100)) %>%
   filter(!right=="did not vote") %>%
-  ggplot(aes(x=immdeth, y=prop)) +
+  ggplot(aes(x=imdfetn, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 7: Attitudes to Immigration and Voting for the Radical Right", caption="ESS 2002-2018")+
