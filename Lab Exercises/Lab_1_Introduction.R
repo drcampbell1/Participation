@@ -14,6 +14,8 @@
 install.packages("tidyverse")
 install.packages("tidytext")
 install.packages("kableExtra")
+install.packages("shiny")
+install.packages("bslib")
 
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
 library(tidyverse)
