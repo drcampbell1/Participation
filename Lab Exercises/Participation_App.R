@@ -1,9 +1,4 @@
-install.packages("here")
-install.packages("shiny")
-install.packages("bslib")
-
 library(tidyverse)
-library(here)
 library(shiny)
 library(bslib)
 
