@@ -13,7 +13,9 @@ options(warn = -1)
 # We're going to start by looking at the variable measuring social trust. This is a question asking how
 # trusting we are of other people and is perhaps the most widely used indicator of social capital.
 
-ess %>% filter(!is.na(strust)) %>% count(strust) %>%
+ess %>% 
+filter(!is.na(strust)) %>% 
+count(strust) %>%
   mutate(percent = round(n/sum(n)*100, digits=1)) %>%
   kbl(caption = "Social Trust in European Democracies",
   col.names = c('Social Trust', 'N', '%'), align="lccc")%>%
@@ -23,8 +25,11 @@ ess %>% filter(!is.na(strust)) %>% count(strust) %>%
 # The pattern varies, but it's possible that a lot of the variation comes from countries with particularly low levels of social trust.
 # We need to compare the different countries within our sample. Lets take a look:
 
-ess %>% filter(!is.na(strust)) %>% group_by(country) %>%
-              count(strust) %>% mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+ess %>% 
+filter(!is.na(strust)) %>% 
+group_by(country) %>%
+              count(strust) %>% 
+mutate(percent = round(n/sum(n)*100, digits=1)) %>%
               kbl(caption = "Social Trust in European Democracies",
               col.names = c('Country', 'Socialise', 'N', '%'), align="lcccc") %>%
               kable_classic_2(full_width=F, position= "left")%>%
@@ -32,8 +37,11 @@ ess %>% filter(!is.na(strust)) %>% group_by(country) %>%
 
 # And we can graph this to make it clear
 
-ess %>% group_by(country) %>% filter(!is.na(strust)) %>%
-  count(strust) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(country) %>% 
+filter(!is.na(strust)) %>%
+  count(strust) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
@@ -44,8 +52,11 @@ ess %>% group_by(country) %>% filter(!is.na(strust)) %>%
 
 # Has anything changed over time?
 
-ess %>% group_by(year, country) %>% filter(!is.na(strust)) %>%
-  count(strust) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(year, country) %>% 
+filter(!is.na(strust)) %>%
+  count(strust) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(year, prop))+
   geom_line()+
@@ -58,8 +69,11 @@ ess %>% group_by(year, country) %>% filter(!is.na(strust)) %>%
 
 # Do the figures differ by age category?
 
-ess %>% group_by(agecat) %>% filter(!is.na(strust), !is.na(agecat)) %>%
-  count(strust) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(agecat) %>% 
+filter(!is.na(strust), !is.na(agecat)) %>%
+  count(strust) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
@@ -71,8 +85,11 @@ ess %>% group_by(agecat) %>% filter(!is.na(strust), !is.na(agecat)) %>%
 
 # Do the figures differ by Education
 
-ess %>% group_by(educat) %>% filter(!is.na(strust), !is.na(educat)) %>%
-  count(strust) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(educat) %>% 
+filter(!is.na(strust), !is.na(educat)) %>%
+  count(strust) %>%
+mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_bar(stat="identity")+
@@ -82,8 +99,11 @@ ess %>% group_by(educat) %>% filter(!is.na(strust), !is.na(educat)) %>%
   
 
 # And Gender
-ess %>% group_by(gender) %>% filter(!is.na(strust), !is.na(gender)) %>%
-  count(strust) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(gender) %>% 
+filter(!is.na(strust), !is.na(gender)) %>%
+  count(strust) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=gender, y=prop)) +
   geom_bar(stat="identity")+
@@ -100,8 +120,10 @@ ess %>% group_by(gender) %>% filter(!is.na(strust), !is.na(gender)) %>%
 
 # Voting
 
-ess %>% filter(!is.na(strust), !is.na(vote)) %>%
-  group_by(strust) %>% count(vote) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(vote)) %>%
+  group_by(strust) %>% 
+count(vote) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!vote == "did not vote") %>%
   kbl(caption = "Social Trust and Electoral Turnout",
@@ -110,8 +132,10 @@ ess %>% filter(!is.na(strust), !is.na(vote)) %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
 
-ess %>% filter(!is.na(strust), !is.na(vote)) %>%
-  group_by(strust, country) %>% count(vote) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(vote)) %>%
+  group_by(strust, country) %>% 
+count(vote) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!vote == "did not vote") %>%
   ggplot(aes(x=strust, y=prop)) +
@@ -122,8 +146,10 @@ ess %>% filter(!is.na(strust), !is.na(vote)) %>%
 
 # Contacting
 
-ess %>% filter(!is.na(strust), !is.na(contact)) %>%
-  group_by(strust) %>% count(contact) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(contact)) %>%
+  group_by(strust) %>% 
+count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!contact == "not contacted") %>%
   kbl(caption = "Social Trust and Contacting Politicians",
@@ -135,8 +161,10 @@ ess %>% filter(!is.na(strust), !is.na(contact)) %>%
 
 # Contacting across countries
 
-ess %>% filter(!is.na(strust), !is.na(contact)) %>%
-  group_by(strust, country) %>% count(contact) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(contact)) %>%
+  group_by(strust, country) %>% 
+count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!contact == "not contacted") %>%
   ggplot(aes(x=strust, y=prop)) +
@@ -147,8 +175,10 @@ ess %>% filter(!is.na(strust), !is.na(contact)) %>%
 
 # Petition
 
-ess %>% filter(!is.na(strust), !is.na(petit)) %>%
-  group_by(strust) %>% count(petit) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(petit)) %>%
+  group_by(strust) %>% 
+count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!petit == "not signed") %>%
   kbl(caption = "Social Trust and Petition",
@@ -159,8 +189,10 @@ ess %>% filter(!is.na(strust), !is.na(petit)) %>%
 
 # Petitioning across countries by socialising
 
-ess %>% filter(!is.na(strust), !is.na(petit)) %>%
-  group_by(strust, country) %>% count(petit) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(petit)) %>%
+  group_by(strust, country) %>% 
+count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!petit == "not signed") %>%
   ggplot(aes(x=strust, y=prop)) +
@@ -172,8 +204,10 @@ ess %>% filter(!is.na(strust), !is.na(petit)) %>%
 
 # Demonstrating
 
-ess %>% filter(!is.na(strust), !is.na(demo)) %>%
-  group_by(strust) %>% count(demo) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(demo)) %>%
+  group_by(strust) %>% 
+count(demo) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!demo == "not demonstrated") %>%
   kbl(caption = "Social Trust and Demonstrating",
@@ -184,8 +218,10 @@ ess %>% filter(!is.na(strust), !is.na(demo)) %>%
 
 # Demonstrating Across Countries
 
-ess %>% filter(!is.na(strust), !is.na(demo)) %>%
-  group_by(strust, country) %>% count(demo) %>%
+ess %>% 
+filter(!is.na(strust), !is.na(demo)) %>%
+  group_by(strust, country) %>% 
+count(demo) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!demo == "not demonstrated") %>%
   ggplot(aes(x=strust, y=prop)) +
