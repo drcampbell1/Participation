@@ -125,39 +125,31 @@ ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
   scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
 
 
-#Q3 Does culture Matter?
+#Q3 Does history matter? Does the legacy of post-communism influence participation?
 
-ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
-  count(vote) %>% mutate(prop= n / sum(n)*100) %>%
-  kbl(caption = "Trust in Politics and Electoral Turnout",
-  col.names=c('Trust', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+ess %>% 
+  filter(!is.na(vote)) %>% 
+  mutate(post_communist = if_else(country == "Poland", "post-communist", "not post-communist")) %>% 
+  group_by(post_communist) %>% 
+  count(vote) %>% 
+  mutate(percent = round(n /sum(n)*100, digits = 1)) %>% filter(vote == "voted")%>%
+  kbl(caption = "The Legacy of Communism and Electoral Turnout",
+      col.names=c('Country', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
 
-ess %>% group_by(ptrust) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  ggplot(aes(x=ptrust, y=prop, fill = vote))+
-  labs(x="", y="", title="Figure 6: Turnout by Trust in Politics", caption="ESS 2002-2018")+
-  geom_bar(stat = "identity", position = "dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
-  scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  theme(legend.title = element_blank())+
-  theme(legend.position = "bottom")+
-  scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
+# Q4 Representative vs. Direct Democracy
 
-ess %>% group_by(ptrust, country) %>% filter(!is.na(vote), !is.na(ptrust)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
-  ggplot(aes(x=ptrust, y=prop, fill = vote))+
-  labs(x="", y="", title="Figure 7: Turnout by Trust in Politics", caption="ESS 2002-2018")+
-  geom_bar(stat = "identity", position = "dodge")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
-  facet_wrap(~country, nrow=3)+
-  scale_y_continuous(labels=scales::percent)+
-  theme_bw()+
-  theme(legend.title = element_blank())+
-  theme(legend.position = "bottom")+
-  scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
+ess %>% 
+  filter(!is.na(vote)) %>% 
+  mutate(direct_democracy = if_else(country == "Switzerland", "Direct Democracy", "Representative Democracy")) %>% 
+  group_by(direct_democracy) %>% 
+  count(vote) %>% 
+  mutate(percent = round(n /sum(n)*100, digits = 1)) %>% filter(vote == "voted")%>%
+  kbl(caption = "Representative vs. Direct Democracy and Electoral Turnout",
+      col.names=c('Type of Democracy', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  kable_classic_2(full_width=F, position= "left") %>% 
+  footnote("European Social Survey, 2002-2018")
 
 # Bonus Question: Let's ask if young people vote. 
 # We can do this by comparing the percentage of young people found in the sample with the percentage found amongst the voters?
