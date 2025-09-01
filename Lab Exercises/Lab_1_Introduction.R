@@ -47,7 +47,8 @@ options(warn = -1)
 
                         # In total we have 78473 observations - or 78473 people gave us answers to our questions.
 
-ess %>% count(country, year)
+ess %>% 
+count(country, year)
 
 # We also have time which enables us to compare participation is changing. We have data from five different time points covering a 16 year period: 
 
@@ -96,23 +97,37 @@ View(ess)
 
 #How many people said they voted at the last national election?
 
-          ess %>% filter(!is.na(vote)) %>% count(vote)
+ess %>% 
+filter(!is.na(vote)) %>% 
+count(vote)
 
 #Percentages are easier, so let's add them in:
 
-          ess %>% filter(!is.na(vote)) %>% count(vote) %>% mutate('%' = round(n/sum(n)*100, digits=1))
+ess %>% 
+filter(!is.na(vote)) %>% 
+count(vote) %>% 
+mutate('%' = round(n/sum(n)*100, digits=1))
 
 #Let's look at contacting politicians
 
-          ess %>% filter(!is.na(contact)) %>% count(contact) %>% mutate('%' = round(n/sum(n)*100, digits=1))
+ess %>% 
+filter(!is.na(contact)) %>% 
+count(contact) %>% 
+mutate('%' = round(n/sum(n)*100, digits=1))
 
 #Lets look at demonstrating
 
-          ess %>% filter(!is.na(demo)) %>% count(demo) %>% mutate('%' = round(n/sum(n)*100, digits=1))
+ess %>% 
+filter(!is.na(demo)) %>% 
+count(demo) %>% 
+mutate('%' = round(n/sum(n)*100, digits=1))
 
 # Let's look at voting for the radical right
 
-          ess %>% filter(!is.na(right)) %>% count(right) %>% mutate('%' = round(n/sum(n)*100, digits=1))
+ess %>% 
+filter(!is.na(right)) %>% 
+count(right) %>% 
+mutate('%' = round(n/sum(n)*100, digits=1))
 
 # What if we compared a lot of forms across countries:
 
