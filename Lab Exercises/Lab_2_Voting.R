@@ -5,7 +5,9 @@ options(warn = -1)
 # Exercise 1: Let's look at voting#
 # Let's ask a simple question: do people vote?
 
-ess %>% filter(!is.na(vote)) %>% count(vote) %>%
+ess %>% 
+filter(!is.na(vote)) %>% 
+count(vote) %>%
   mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
   kbl(caption = "Electoral Turnout in European Democracies",
   col.names = c('voted', 'N', '%'), align="lccc") %>%
@@ -14,33 +16,48 @@ ess %>% filter(!is.na(vote)) %>% count(vote) %>%
 
 # How does this vary by country?#
 
-ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
-  count(vote) %>% mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
+ess %>% 
+group_by(country) %>% 
+filter(!is.na(vote)) %>%
+  count(vote) %>% 
+mutate("%" = round(n/sum(n) * 100, digits=1)) %>%
   kbl(caption = "Electoral Turnout in European Democracies",
   col.names = c('Country', 'Voted', 'N', '%'), align="cccc")%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
 
 # We can present this graphically to make it clearer#
-ess %>% group_by(country) %>% filter(!is.na(vote)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(country) %>% 
+filter(!is.na(vote)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!vote=="did not vote") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
-  geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 1: Turnout by Country", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 1: Turnout by Country", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
 
 # What's changed over time? 
 
-ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>%
+ess %>% 
+group_by(year, country) %>% 
+filter(!is.na(vote)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>%
   filter(!vote=="did not vote") %>%
   ggplot(aes(year, prop))+
   geom_line()+
   facet_wrap(~country, nrow = 3)+
-  labs(x="", y="", title="Figure 2: Turnout by Country Over Time", caption="ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 2: Turnout by Country Over Time", 
+       caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
@@ -50,8 +67,11 @@ ess %>% group_by(year, country) %>% filter(!is.na(vote)) %>%
 # Q1: Do Socio-Economic Resources Matter#
 # What about Education?#
 
-ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
-  count(vote) %>% mutate("%" =n/sum(n)*100) %>%
+ess %>% 
+group_by(educat) %>% 
+filter(!is.na(vote), !is.na(educat)) %>%
+  count(vote) %>% 
+mutate("%" =n/sum(n)*100) %>%
   kbl(caption = "Education and Electoral Turnout",
   col.names = c('Education', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
@@ -59,12 +79,16 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 # We can graph the relationship
 
-ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
+ess %>% 
+group_by(educat) %>% 
+filter(!is.na(vote), !is.na(educat)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>% 
+mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill=vote))+
   labs(x="", y="", title="Figure 2: Turnout by Education", caption="ESS 2002-2018")+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
-  geom_bar(stat="identity", position="dodge")+
+  geom_col()+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
@@ -73,11 +97,15 @@ ess %>% group_by(educat) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 # Turnout by Education and Country #
 
-ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
+ess %>% 
+group_by(educat, country) %>% 
+filter(!is.na(vote), !is.na(educat)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>% 
+mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 3: Turnout by Education and Country", caption="Source: ESS 2002-2018")+
-  geom_bar(stat = "identity", position = "dodge")+
+  geom_col()+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
@@ -87,20 +115,31 @@ ess %>% group_by(educat, country) %>% filter(!is.na(vote), !is.na(educat)) %>%
 
 # Q2: Does Rationality Influence Turnout?
 
-ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
-  count(vote) %>% mutate(prop= n /sum(n)*100) %>%
+ess %>% 
+group_by(satecon) %>% 
+filter(!is.na(vote), !is.na(satecon)) %>%
+  count(vote) %>% 
+mutate(prop= n /sum(n)*100) %>%
   kbl(caption = "Perceptions of the Economy and Electoral Turnout",
-  col.names=c('Economic Perceptions', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  col.names=c('Economic Perceptions', 
+              'Voted', 
+              'N', 
+              '%'), 
+      align="ccccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
 
 # We can graph this relationship
 
-ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
+ess %>% 
+group_by(satecon) %>% 
+filter(!is.na(vote), !is.na(satecon)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>% 
+mutate("%" =prop*100) %>%
   ggplot(aes(x=satecon, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 4: Turnout by Perceptions of the Economy", caption="Source: ESS 2002-2018")+
-  geom_bar(stat = "identity", position = "dodge")+
+  geom_col()+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
@@ -111,11 +150,15 @@ ess %>% group_by(satecon) %>% filter(!is.na(vote), !is.na(satecon)) %>%
 
 # Does it differ between the countries?
 
-ess %>% group_by(satecon, country) %>% filter(!is.na(vote), !is.na(satecon)) %>%
-  count(vote) %>% mutate(prop=prop.table(n*100)) %>% mutate("%" =prop*100) %>%
+ess %>% 
+group_by(satecon, country) %>% 
+filter(!is.na(vote), !is.na(satecon)) %>%
+  count(vote) %>% 
+mutate(prop=prop.table(n*100)) %>% 
+mutate("%" =prop*100) %>%
   ggplot(aes(x=satecon, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2002-2018")+
-  geom_bar(stat = "identity", position = "dodge")+
+  geom_col()+
   scale_fill_manual(values=c("#FF0000", "#0000FF"))+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
