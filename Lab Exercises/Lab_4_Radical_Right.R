@@ -38,7 +38,10 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 1: Voted for Radical Right Party by Country", caption="ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 1: Voted for Radical Right Party by Country", 
+       caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
@@ -78,15 +81,20 @@ c <- ess %>%
 d <- ess %>%
   filter(!is.na(right)) %>%
   group_by(country, gender) %>% 
-  filter(!right=="did not vote") %>% count(right) %>% 
+  filter(!right=="did not vote") %>% 
+count(right) %>% 
   group_by(country) %>% 
   mutate(perc_vt_pp=n/sum(n)*100) %>% 
   select(-right)
 
 left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
   kbl(caption = "Gender Balance in Population and Voters of Radical Right Parties in European Democracies",
-               col.names = c('Country', 'Gender', 'Percentage Population', 'Percentage Voter of Radical Right Political Party'),
-               digits =1, align="cccc") %>%
+               col.names = c('Country',
+                             'Gender', 
+                             'Percentage Population', 
+                             'Percentage Voter of Radical Right Political Party'),
+               digits =1, 
+      align="cccc") %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
 
@@ -103,7 +111,10 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 2: Voting for the Radical Right by Education", caption="Source: ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 2: Voting for the Radical Right by Education", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
@@ -117,7 +128,10 @@ filter(!is.na(right), !is.na(educat)) %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow=3)+
-  labs(x="", y="", title="Figure 3: Voting for the Radical Right by Education and Country", caption="Source: ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 3: Voting for the Radical Right by Education and Country", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
@@ -133,7 +147,10 @@ group_by(ptrust) %>%
   filter(!right=="did not vote") %>%
   ggplot(aes(x=ptrust, y=prop)) +
   geom_col()+
-  labs(x="", y="", title="Figure 4: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 4: Political Trust and Voting for the Radical Right", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -146,7 +163,10 @@ group_by(ptrust, country) %>%
   ggplot(aes(x=ptrust, y=prop)) +
   geom_col()+
   facet_wrap(~country, nrow=3)+
-  labs(x="", y="", title="Figure 5: Political Trust and Voting for the Radical Right", caption="Source: ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 5: Political Trust and Voting for the Radical Right", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -166,7 +186,11 @@ mutate(prop=prop.table(n*100)) %>%
        subtitle = "(different ethnicity)",
        caption="ESS 2016")+
   scale_y_continuous(labels=scales::percent)+
-  scale_x_continuous(breaks = c(1,2,3,4), labels=c("s_disagree", "disagree", "agree", "s_agree"))+
+  scale_x_continuous(breaks = c(1,2,3,4), 
+                     labels=c("s_disagree", 
+                              "disagree", 
+                              "agree", 
+                              "s_agree"))+
   theme_bw()
   
 ess %>% 
@@ -180,8 +204,11 @@ filter(!is.na(right), !is.na(imdfetn)) %>%
   facet_wrap(~country, nrow=3)+
   labs(x="", y="", title="Figure 7: Restrictive Attitudes to Immigration and Voting for the Radical Right", caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
-  scale_x_continuous(breaks = c(1,2,3,4), labels=c("s_disagree", "disagree", "agree", "s_agree"))+
-  theme_bw()
+  scale_x_continuous(breaks = c(1,2,3,4), 
+                     labels=c("s_disagree", "disagree",
+                              "agree", 
+                              "s_agree"))+
+theme_bw()
   
 
 rm(a,b,c,d)
