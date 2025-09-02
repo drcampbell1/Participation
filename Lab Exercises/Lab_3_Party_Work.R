@@ -88,7 +88,8 @@ filter(party=="worked") %>%
         mutate(perc_wk_pp=n/sum(n)*100) %>%
        select(-party)
 
-left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
+left_join(c, d, by=c("country", "gender")) %>% 
+select(country, gender, perc_pop, perc_wk_pp)%>%
   kbl(caption = "Gender Balance in Population and Workers of Parties in European Democracies",
                col.names = c('Country', 'Gender', 'Population', 'Workers of Political Party'),
                digits =1, align="cccc") %>%
