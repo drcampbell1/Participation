@@ -1,0 +1,278 @@
+---
+title: 'Lab 5: Social Capital'
+author: "Ross Campbell"
+date: '2025-09-01'
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(tidyverse)
+library(tidytext)
+library("kableExtra")
+ess <- foreign::read.dta("https://raw.github.com/drcampbell1/Participation/master/data/ess.dta", convert.factors = TRUE)
+```
+
+Question 1: How trusting are we?
+
+We're going to start by looking at the variable measuring social trust. This is a question asking how trusting we are of other people and is perhaps the most widely used indicator of social capital.
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(strust)) %>% 
+  count(strust) %>%
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable("pandoc", caption = "Social Trust in European Democracies",
+  col.names = c('Social Trust', 'N', '%'), align="lccc")
+```
+
+The pattern varies, but it's possible that a lot of the variation comes from countries with particularly low levels of social trust. We need to compare the different countries within our sample. Lets take a look:
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(strust)) %>% 
+  group_by(country) %>%
+  count(strust) %>% 
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable("pandoc", 
+               caption = "Social Trust in European Democracies",
+              col.names = c('Country', 
+                            'Socialise', 
+                            'N', 
+                            '%'), 
+              align="lcccc")
+```
+
+And we can graph this to make it clear
+
+```{r, echo = FALSE}
+ess %>% 
+  group_by(country) %>% 
+  filter(!is.na(strust)) %>%
+  count(strust) %>% 
+  mutate(prop=prop.table(n*100)) %>%
+  filter(!strust=="low" & !strust == "medium") %>%
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 1: Social Trust by Country", 
+       caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  theme(axis.text.x = element_text(angle = 30, hjust =1))
+``` 
+
+Has anything changed over time?
+
+```{r, echo = FALSE}
+
+ess %>% group_by(year, country) %>% 
+  filter(!is.na(strust)) %>%
+  count(strust) %>% 
+  mutate(prop=prop.table(n*100)) %>%
+  filter(!strust=="low" & !strust == "medium") %>%
+  ggplot(aes(year, prop))+
+  geom_line()+
+  facet_wrap(~country, ncol = 4)+
+  labs(x="", y="", title="Figure 2: Social Trust Over Time", caption="ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()+
+  scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))+
+  theme(axis.text.x = element_text(angle = 30, hjust =1))
+```
+
+Do the figures differ by age category?
+
+```{r, echo = FALSE}
+ess %>% 
+  group_by(agecat) %>% 
+  filter(!is.na(strust), !is.na(agecat)) %>%
+  count(strust) %>% 
+  mutate(prop=prop.table(n*100)) %>%
+  filter(!strust=="low" & !strust == "medium") %>%
+  ggplot(aes(x=agecat, y=prop)) +
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 3: Social Trust by Age Category", caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+Do the figures differ by Education?
+
+```{r, echo = FALSE}
+
+ess %>% 
+  group_by(educat) %>% 
+  filter(!is.na(strust), !is.na(educat)) %>%
+  count(strust) %>% 
+  mutate(prop=prop.table(n*100)) %>%
+  filter(!strust=="low" & !strust == "medium") %>%
+  ggplot(aes(x=educat, y=prop)) +
+  geom_col()+
+  labs(x="",
+       y="",
+       title="Figure 4: Social Trust and Education",
+       caption="ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```  
+
+And Gender?
+
+```{r, echo = FALSE}
+ess %>% 
+  group_by(gender) %>% 
+  filter(!is.na(strust), !is.na(gender)) %>%
+  count(strust) %>% 
+  mutate(prop=prop.table(n*100)) %>%
+  filter(!strust=="low" & !strust == "medium") %>%
+  ggplot(aes(x=gender, y=prop)) +
+  geom_col()+
+  labs(x="",
+       y="",
+       title="Figure 5: Social Trust and Gender",
+       caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```  
+
+ Section 2: Does this influence participation?
+
+Although we have established the people are relatively social, one might ask: does it matter? Does the propensity to be socially active spur participation? And does it vary across countries?
+
+ Voting
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(strust), !is.na(vote)) %>%
+  group_by(strust) %>% count(vote) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!vote == "did not vote") %>%
+  knitr::kable("pandoc", 
+               caption = "Social Trust and Electoral Turnout",
+  col.names = c('Socialising', 'Voting', 'N', 'Percentage'),
+  digits=2, align="cccc")
+```
+
+
+```{r, echo = FALSE}
+
+ess %>% 
+  filter(!is.na(strust), !is.na(vote)) %>%
+  group_by(strust, country) %>% 
+  count(vote) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!vote == "did not vote") %>%
+  ggplot(aes(x=strust, y=prop)) +
+  geom_col()+
+  labs(x="", y="%", title="Figure 6: Voting by Social Trust and Country", caption="ESS 2016")+
+  theme_bw()+
+  facet_wrap(~country, nrow= 3)
+```
+
+ Contacting
+
+```{r, echo = FALSE, results = 'asis'}
+
+ess %>% 
+  filter(!is.na(strust), !is.na(contact)) %>%
+  group_by(strust) %>% 
+  count(contact) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!contact == "not contacted") %>%
+  knitr::kable("pandoc", 
+               caption = "Social Trust and Contacting Politicians",
+  col.names = c('Social Trust', 'Contacting', 'N', 'Percentage'),
+  digits=2, align="cccc")
+```
+
+ Contacting across countries
+
+```{r, echo = FALSE}
+
+ess %>% 
+  filter(!is.na(strust), !is.na(contact)) %>%
+  group_by(strust, country) %>% 
+  count(contact) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!contact == "not contacted") %>%
+  ggplot(aes(x=strust, y=prop)) +
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 7: Contacting by Social Trust and Country", caption="Source: ESS 2002-2018")+
+  theme_bw()+
+  facet_wrap(~country, nrow = 3)
+```
+
+ Petition
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(strust), !is.na(petit)) %>%
+  group_by(strust) %>% 
+  count(petit) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!petit == "not signed") %>%
+  knitr::kable("pandoc", caption = "Social Trust and Petition",
+  col.names = c('Social Trust', 'Petition', 'N', 'Percentage'),
+  digits=2, align="cccc")
+```
+
+ Petitioning across countries by socialising
+
+```{r, echo = FALSE}
+ess %>% 
+filter(!is.na(strust), !is.na(petit)) %>%
+  group_by(strust, country) %>% 
+  count(petit) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!petit == "not signed") %>%
+  ggplot(aes(x=strust, y=prop)) +
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 8: Petitioning by Social Trust and Country", 
+       caption="Source: ESS 2002-2018")+
+  theme_bw()+
+  facet_wrap(~country, nrow = 3)
+```
+
+ Demonstrating
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(strust), !is.na(demo)) %>%
+  group_by(strust) %>% 
+  count(demo) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!demo == "not demonstrated") %>%
+  kbl("pandoc", caption = "Social Trust and Demonstrating",
+  col.names = c('Social Trust', 'Demonstrating', 'N', 'Percentage'),
+  digits=2, align="cccc")
+```
+
+Demonstrating Across Countries
+
+```{r, echo = FALSE}
+ess %>% 
+  filter(!is.na(strust), !is.na(demo)) %>%
+  group_by(strust, country) %>% 
+  count(demo) %>%
+  mutate(prop=n/sum(n)*100) %>%
+  filter(!demo == "not demonstrated") %>%
+  ggplot(aes(x=strust, y=prop)) +
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 9: Demonstrating by Social Trust and Country", 
+       caption="Source: ESS 2002-2018")+
+  theme_bw()+
+  facet_wrap(~country, nrow = 3)
+```
+
+So, time to draw some conclusions.
+Does social capital matter?

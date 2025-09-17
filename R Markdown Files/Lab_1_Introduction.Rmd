@@ -1,0 +1,124 @@
+---
+title: "Lab 1: Introduction"
+output: word_document
+author: "Ross Campbell PhD"
+date: "2025-08-28"
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(tidyverse)
+library(tidytext)
+library("kableExtra")
+ess <- foreign::read.dta("https://raw.github.com/drcampbell1/Participation/master/data/ess.dta", convert.factors = TRUE)
+
+```
+
+## Introduction to the data
+
+In the labs we'll be using the ESS. This is the European Social Survey - a big cross-sectional survey conducted in 30 countries in Europe.
+
+
+## Coverage
+To make the file more manageable, I've cut it down quite a bit.
+
+### Basic Terminology
+
+1. Dependent variable: something we are looking to explain, e.g. one (or more) forms of participation:
+2. Independent variable : something that influences our dependent variable (age, for example, may influence voting).
+3. Observation: someone we ask about their participation and age.
+ 
+### Overall, then, this file contains :
+8 different forms of participation; 8 different variables that may influence participation (or 9 if we include country); and And we have 78473 observations - or 78473 people gave us answers to our questions.
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  count(country) %>% 
+  knitr::kable("pandoc", caption = "Coverage of European Social Survey",
+               col.names = c("Country", "Number of Observations"), align = "cc")
+```
+
+For each country, we also have data over time:
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  count(year) %>% 
+  knitr::kable("pandoc", caption = "Coverage in time of European Social Survey",
+               col.names = c("Year", "Observations"), align = "cc")
+```
+
+Let's finish today by looking at some forms of participation:
+
+How many people said they voted at the last national election?
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+  filter(!is.na(vote)) %>% 
+  count(vote) %>%
+  mutate('%' = round(n/sum(n)*100, digits=1)) %>% 
+    knitr::kable("pandoc", caption = "Electoral Participation",
+               col.names = c("Voted", "Observations", "%"), align = "ccc")
+
+```
+
+#Let's look at contacting politicians
+```{r, echo = FALSE}
+ess %>% 
+  filter(!is.na(contact)) %>% count(contact) %>% 
+  mutate('%' = round(n/sum(n)*100, digits=1)) %>% 
+  knitr::kable("pandoc", caption = "Contacting",
+               col.names = c("Contacted Politicians", "Observations", "%"), align = "ccc")
+```
+
+#Lets look at demonstrating
+
+```{r, echo = FALSE}
+ess %>% 
+  filter(!is.na(demo)) %>% count(demo) %>% 
+  mutate('%' = round(n/sum(n)*100, digits=1)) %>% 
+  knitr::kable("pandoc", caption = "Demonstrating",
+               col.names = c("Have Demonstrated", "Observations", "%"), align = "ccc")
+```
+
+# Let's look at voting for the radical right
+```{r, echo = FALSE}
+ess %>% 
+  filter(!is.na(right)) %>% count(right) %>% 
+  mutate('%' = round(n/sum(n)*100, digits=1)) %>% 
+  knitr::kable("pandoc", caption = "Voted Radical Right",
+               col.names = c("Voted Radical Right", "Observations", "%"), align = "ccc")
+```
+
+
+What if we compared a lot of forms across countries?
+```{r, echo = FALSE, fig.height=25, fig.width=35}
+ess %>% 
+  pivot_longer((vote:petit), 
+               names_to = "mode", 
+               values_to = "value") %>% 
+  group_by(country, mode) %>%
+  filter(!is.na(value)) %>% 
+  count(value) %>% 
+  mutate(percent = n/sum(n)*100) %>% 
+  filter(value == str_remove(value, "not")) %>% 
+  mutate(value=str_replace(value, "have", ""), 
+         value = reorder_within(value, percent, country)) %>% 
+  ggplot(aes(reorder(value, percent), percent))+
+  geom_col(fill= "steelblue")+
+  facet_wrap(~country, scales = "free")+
+  coord_flip()+
+  theme_minimal()+
+  scale_x_reordered()+
+  theme(axis.text.x = element_text(size = 46),
+              axis.text.y = element_text(size = 46),
+        plot.title = element_text(size = 46),
+        plot.subtitle = element_text(size=46),
+        plot.caption = element_text(size = 40))+
+  labs(x = "", y = "%", 
+       title = "Figure 1:Comparing Political\nParticipation in European Democracies",
+       subtitle = "(Political Styles that Differ)",
+       caption = "Source: ESS 2002-2018")
+```
+

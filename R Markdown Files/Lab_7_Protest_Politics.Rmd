@@ -1,0 +1,192 @@
+---
+title: 'Lab 7: Protest Politics'
+author: "Ross Campbell"
+date: "2025-09-17"
+output: word_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(foreign)
+library(tidyverse)
+library(tidytext)
+library("kableExtra")
+ess <- foreign::read.dta("https://raw.github.com/drcampbell1/Participation/master/data/ess.dta", convert.factors = TRUE)
+```
+
+As we've discussed in the lectures, there are other forms of protest politics. In this lab, we're going to focus on petitioning and boycotting. These are important because people may show their support for a group or cause by signing a public petition supporting it, or they may boycott products for political or ethical reasons.
+
+Question 1: How common is Petitioning in European democracies?
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+filter(!is.na(petit)) %>% 
+count(petit) %>%
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable(caption = "Petitioning in European Democracies",
+               col.names = c('Petitioning', 'N', '%'), align="lcc")
+```
+Let's break this down by the six countries for which we have data:
+
+```{r, echo=FALSE, results = 'asis'}
+ess %>% 
+filter(!is.na(petit)) %>% 
+group_by(country) %>% 
+count(petit) %>%
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable(caption = "Petitioning in European Democracies",
+               col.names = c('Country', 'petiting', 'N', '%'), align="lccc")
+```
+
+We can graph this to make it clear
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(country) %>% 
+filter(!is.na(petit)) %>%
+  count(petit) %>% mutate(prop=prop.table(n*100)) %>%
+  filter(!petit=="not signed") %>%
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 1: Petitioning by Country", caption="Source: ESS 2002-2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+Question 2: How common is boycotting in European democracies?
+
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+filter(!is.na(boyct)) %>% 
+count(boyct) %>%
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable(caption = "Boycotting in European Democracies",
+               col.names = c('Boycotting', 'N', '%'), align="lcc")
+```
+
+Let's break this down by the countries for which we have data:
+```{r, echo = FALSE, results = 'asis'}
+ess %>% 
+filter(!is.na(boyct)) %>% 
+group_by(country) %>% 
+count(boyct) %>%
+  mutate(percent = round(n/sum(n)*100, digits=1)) %>%
+  knitr::kable(caption = "Boycotting in European Democracies",
+               col.names = c('Country', 'Boycotting', 'N', '%'), align="lccc")
+```
+We can graph this to make it clear
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(country) %>% 
+filter(!is.na(boyct)) %>%
+  count(boyct) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!boyct=="not boycotted") %>%
+  ggplot(aes(x=reorder(country, -prop), y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 2: Boycotting by Country", caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+Section 2: Who takes part in these forms of participation?
+
+What is the age profile of petitioners?
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(agecat) %>% 
+filter(!is.na(petit), !is.na(agecat)) %>%
+  count(petit) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!petit=="not signed") %>%
+  ggplot(aes(x=agecat, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 3: Petitioning by Age Category", caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+What is the age profile of people who boycott?
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(agecat) %>% 
+filter(!is.na(boyct), !is.na(agecat)) %>%
+  count(boyct) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!boyct=="not boycotted") %>%
+  ggplot(aes(x=agecat, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 4: Boycotting by Age Category", caption="Source: ESS 2002-2018")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+What is the education profile of petitioners?
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(educat) %>% 
+filter(!is.na(petit), !is.na(educat)) %>%
+  count(petit) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!petit=="not signed") %>%
+  ggplot(aes(x=educat, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 5: Petitioning by Education", caption="Source: ESS 2002-2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+``` 
+
+What is the education profile of people who boycott?
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(educat) %>% 
+filter(!is.na(boyct), !is.na(educat)) %>%
+  count(boyct) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!boyct=="not boycotted") %>%
+  ggplot(aes(x=educat, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 6: Boycotting by Education", caption="Source: ESS 2002-2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+  
+What is the gender profile of petitioners?
+
+Males only?
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(gender) %>% 
+filter(!is.na(petit), !is.na(gender)) %>%
+  count(petit) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!petit=="not signed") %>%
+  ggplot(aes(x=gender, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 7: Petitioning by Gender", caption="ess 2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+
+```{r, echo = FALSE}
+ess %>% 
+group_by(gender) %>% 
+filter(!is.na(boyct), !is.na(gender)) %>%
+  count(boyct) %>% 
+mutate(prop=prop.table(n*100)) %>%
+  filter(!boyct=="not boycotted") %>%
+  ggplot(aes(x=gender, y=prop)) +
+  geom_bar(stat="identity")+
+  labs(x="", y="", title="Figure 8: Boycotting by Gender", caption="Source: ESS 2002-2016")+
+  scale_y_continuous(labels=scales::percent)+
+  theme_bw()
+```
+What, then, might you conclude about protest politics on the basis of what we've looked at here? Do very few people take part? Are they concentrated in one age group? Are they better educated? Is there gender imbalance?
