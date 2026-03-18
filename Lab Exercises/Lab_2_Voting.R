@@ -87,8 +87,8 @@ mutate(prop=prop.table(n*100)) %>%
 mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill=vote))+
   labs(x="", y="", title="Figure 2: Turnout by Education", caption="ESS 2002-2018")+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
-  geom_col()+
+  scale_fill_manual(values=c("darkred", "steelblue"))+
+  geom_col(position = "dodge")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
@@ -105,68 +105,69 @@ mutate(prop=prop.table(n*100)) %>%
 mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 3: Turnout by Education and Country", caption="Source: ESS 2002-2018")+
-  geom_col()+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  geom_col(position = "dodge)+
+  scale_fill_manual(values=c("darkred", "steelblue"))+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
   theme(legend.position = "bottom")
 
-# Q2: Does Rationality Influence Turnout?
+# Q2: Does Economic Rationality Influence Turnout?
 
 ess %>% 
-group_by(satecon) %>% 
-filter(!is.na(vote), !is.na(satecon)) %>%
+group_by(quin) %>% 
+filter(!is.na(vote), !is.na(quin)) %>%
   count(vote) %>% 
 mutate(prop= n /sum(n)*100) %>%
-  kbl(caption = "Perceptions of the Economy and Electoral Turnout",
-  col.names=c('Economic Perceptions', 
+filter(vote == 'voted') %>%
+  kbl(caption = "Income and Electoral Turnout",
+  col.names=c('Income Quintile', 
               'Voted', 
               'N', 
               '%'), 
-      align="ccccc", digits=1)%>% 
+      align="cccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
 
 # We can graph this relationship
 
 ess %>% 
-group_by(satecon) %>% 
-filter(!is.na(vote), !is.na(satecon)) %>%
+group_by(quin) %>% 
+filter(!is.na(vote), !is.na(quin)) %>%
   count(vote) %>% 
 mutate(prop=prop.table(n*100)) %>% 
 mutate("%" =prop*100) %>%
-  ggplot(aes(x=satecon, y=prop, fill = vote))+
+  ggplot(aes(x=quin, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 4: Turnout by Perceptions of the Economy", caption="Source: ESS 2002-2018")+
-  geom_col()+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  geom_col(position = "dodge")+
+  scale_fill_manual(values=c("darkred", "steelblue"))+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
-  theme(legend.position = "bottom")+
-  scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
+  theme(legend.position = "bottom")
 
 
 # Does it differ between the countries?
 
 ess %>% 
-group_by(satecon, country) %>% 
-filter(!is.na(vote), !is.na(satecon)) %>%
+group_by(quin, country) %>% 
+filter(!is.na(vote), !is.na(quin)) %>%
   count(vote) %>% 
 mutate(prop=prop.table(n*100)) %>% 
 mutate("%" =prop*100) %>%
-  ggplot(aes(x=satecon, y=prop, fill = vote))+
-  labs(x="", y="", title="Figure 5: Turnout by Economic Satisfaction and Country", caption="ESS 2002-2018")+
-  geom_col()+
-  scale_fill_manual(values=c("#FF0000", "#0000FF"))+
+  ggplot(aes(x=quin, y=prop, fill = vote))+
+  labs(x="", 
+       y="", 
+       title="Figure 5: Turnout by Income Quintile and Country", 
+       caption="ESS 2002-2018")+
+  geom_col(position = "dodge")+
+  scale_fill_manual(values=c("darkred", "steelblue"))+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   theme(legend.title = element_blank())+
-  theme(legend.position = "bottom")+
-  scale_x_discrete(labels=c("low" = "low", "medium" = "medium", "high" = "high"))
-
+  theme(legend.position = "bottom")
 
 #Q3 Does history matter? Does the legacy of post-communism influence participation?
 
