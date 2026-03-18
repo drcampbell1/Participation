@@ -73,7 +73,7 @@ filter(!is.na(vote), !is.na(educat)) %>%
   count(vote) %>% 
 mutate("%" =n/sum(n)*100) %>%
   kbl(caption = "Education and Electoral Turnout",
-  col.names = c('Education', 'Voted', 'N', '%'), align="ccccc", digits=1)%>% 
+  col.names = c('Education', 'Voted', 'N', '%'), align="cccc", digits=1)%>% 
   kable_classic_2(full_width=F, position= "left") %>% 
   footnote("European Social Survey, 2002-2018")
 
@@ -105,7 +105,7 @@ mutate(prop=prop.table(n*100)) %>%
 mutate("%" =prop*100) %>%
   ggplot(aes(x=educat, y=prop, fill = vote))+
   labs(x="", y="", title="Figure 3: Turnout by Education and Country", caption="Source: ESS 2002-2018")+
-  geom_col(position = "dodge)+
+  geom_col(position = "dodge")+
   scale_fill_manual(values=c("darkred", "steelblue"))+
   facet_wrap(~country, nrow=3)+
   scale_y_continuous(labels=scales::percent)+
