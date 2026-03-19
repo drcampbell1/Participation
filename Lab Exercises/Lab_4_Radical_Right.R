@@ -98,9 +98,6 @@ left_join(c, d, by=c("country", "gender")) %>% select(-n.x, -n.y) %>%
   kable_classic_2(full_width=F, position= "left")%>%
   footnote(general = "Source: ESS 2002-2018")
 
-rm(a,b,c,d)
-
-
 #Let's look at Education
 
 ess %>% 
