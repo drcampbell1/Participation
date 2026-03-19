@@ -44,8 +44,11 @@ filter(!is.na(strust)) %>%
 mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
-  geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 1: Social Trust by Country", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 1: Social Trust by Country", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -61,7 +64,10 @@ mutate(prop=prop.table(n*100)) %>%
   ggplot(aes(year, prop))+
   geom_line()+
   facet_wrap(~country, nrow = 3)+
-  labs(x="", y="", title="Figure 2: Social Trust Over Time", caption="ESS 2002-2018")+
+  labs(x="", 
+       y="", 
+       title="Figure 2: Social Trust Over Time", 
+       caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
@@ -76,8 +82,11 @@ filter(!is.na(strust), !is.na(agecat)) %>%
 mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=agecat, y=prop)) +
-  geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 3: Social Trust by Age Category", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 3: Social Trust by Age Category", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -92,8 +101,11 @@ filter(!is.na(strust), !is.na(educat)) %>%
 mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=educat, y=prop)) +
-  geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 4: Social Trust and Education", caption="ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 4: Social Trust and Education", 
+       caption="ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -106,8 +118,11 @@ filter(!is.na(strust), !is.na(gender)) %>%
 mutate(prop=prop.table(n*100)) %>%
   filter(!strust=="low" & !strust == "medium") %>%
   ggplot(aes(x=gender, y=prop)) +
-  geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 5: Social Trust and Gender", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="", 
+       title="Figure 5: Social Trust and Gender", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -139,8 +154,11 @@ count(vote) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!vote == "did not vote") %>%
   ggplot(aes(x=strust, y=prop)) +
-  geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 6: Voting by Social Trust and Country", caption="ESS 2016")+
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 6: Voting by Social Trust and Country", 
+       caption="ESS 2016")+
   theme_bw()+
   facet_wrap(~country, nrow= 3)
 
@@ -168,8 +186,11 @@ count(contact) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!contact == "not contacted") %>%
   ggplot(aes(x=strust, y=prop)) +
-  geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 7: Contacting by Social Trust and Country", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 7: Contacting by Social Trust and Country", 
+       caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
 
@@ -196,8 +217,11 @@ count(petit) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!petit == "not signed") %>%
   ggplot(aes(x=strust, y=prop)) +
-  geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 8: Petitioning by Social Trust and Country", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 8: Petitioning by Social Trust and Country", 
+       caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
 
@@ -225,8 +249,11 @@ count(demo) %>%
   mutate(prop=n/sum(n)*100) %>%
   filter(!demo == "not demonstrated") %>%
   ggplot(aes(x=strust, y=prop)) +
-  geom_bar(stat="identity", position = "dodge")+
-  labs(x="", y="%", title="Figure 9: Demonstrating by Social Trust and Country", caption="Source: ESS 2002-2018")+
+  geom_col()+
+  labs(x="", 
+       y="%", 
+       title="Figure 9: Demonstrating by Social Trust and Country", 
+       caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
 
