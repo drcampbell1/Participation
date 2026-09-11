@@ -139,20 +139,6 @@ ess_minor %>%
   geom_col(fill = "steelblue")+
   theme_light()
 
-# Let's take the average and graph it for each country
-
-ess_minor %>% 
-  group_by(country) %>% 
-  summarise(mean = mean(total)) %>% 
-  ggplot(aes(reorder(country, -mean), mean))+
-  labs(x = "", 
-       y = "mean",
-       title = "Average Participation in Europe",
-       subtitle = "(maximum of 7)",
-       caption = "Source: European Social Survey")+
-  geom_col(fill = "steelblue")+
-  theme_light()
-
 # Let's take a more detailed look: What percentage of respondents participate
 
 ess_minor %>% 
