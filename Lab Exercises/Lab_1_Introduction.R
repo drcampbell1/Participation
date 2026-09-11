@@ -18,13 +18,14 @@ install.packages("shiny")
 install.packages("bslib")
 
 ess <- foreign::read.dta("data/ess.dta", convert.factors=TRUE)
+ess_minor <- foreign::read.dta("data/ess_minor.dta", convert.factors=TRUE)
 library(tidyverse)
 library(tidytext)
 options(warn = -1)
 
 #Introduction to the data#
 
-#In the labs we'll be using the ESS. This is the European Social Survey -
+#In the labs we'll be using the European Social Survey (ESS) -
 #a big cross-sectional survey conducted in 30 countries in Europe.
 
 
@@ -43,12 +44,10 @@ options(warn = -1)
 
                       # 8 different forms of participation;
 
-                        # 8 different variables that may influence participation (or 9 if we include country)
+                        # 8 different variables that may influence participation (9 if we include country)
 
                         # In total we have 78473 observations - or 78473 people gave us answers to our questions.
 
-ess %>% 
-count(country, year)
 
 # We also have time which enables us to compare participation is changing. We have data from five different time points covering a 16 year period: 
 
@@ -97,11 +96,6 @@ View(ess)
 
 #How many people said they voted at the last national election?
 
-ess %>% 
-filter(!is.na(vote)) %>% 
-count(vote)
-
-#Percentages are easier, so let's add them in:
 
 ess %>% 
 filter(!is.na(vote)) %>% 
@@ -129,28 +123,92 @@ filter(!is.na(right)) %>%
 count(right) %>% 
 mutate('%' = round(n/sum(n)*100, digits=1))
 
-# What if we compared a lot of forms across countries:
+# What's the general picture across the countries?
 
-ess %>% 
-  pivot_longer((vote:petit), 
-               names_to = "mode", 
-               values_to = "value") %>% 
-  group_by(country, mode) %>%
-  filter(!is.na(value)) %>% 
-  count(value) %>% 
-  mutate(percent = n/sum(n)*100) %>% 
-  filter(value == str_remove(value, "not")) %>% 
-  mutate(value=str_replace(value, "have", ""), 
-         value = reorder_within(value, percent, country)) %>% 
-  ggplot(aes(reorder(value, percent), percent))+
-  geom_col(fill= "steelblue")+
-  facet_wrap(~country, scales = "free")+
-  coord_flip()+
-  theme_minimal()+
-  scale_x_reordered()+
-  labs(x = "", y = "%", 
-       title = "Figure 1:Comparing Political Participation in European Democracies",
-       subtitle = "(Political Styles that Differ)",
-       caption = "Source: ESS 2002-2018")
+# Let's take the average and graph it for each country
+
+ess_minor %>% 
+  group_by(country) %>% 
+  summarise(mean = mean(total)) %>% 
+  ggplot(aes(reorder(country, -mean), mean))+
+  labs(x = "", 
+       y = "mean",
+       title = "Average Participation in Europe",
+       subtitle = "(maximum of 7)",
+       caption = "Source: European Social Survey")+
+  geom_col(fill = "steelblue")+
+  theme_light()
+
+# Let's take the average and graph it for each country
+
+ess_minor %>% 
+  group_by(country) %>% 
+  summarise(mean = mean(total)) %>% 
+  ggplot(aes(reorder(country, -mean), mean))+
+  labs(x = "", 
+       y = "mean",
+       title = "Average Participation in Europe",
+       subtitle = "(maximum of 7)",
+       caption = "Source: European Social Survey")+
+  geom_col(fill = "steelblue")+
+  theme_light()
+
+# Let's take a more detailed look: What percentage of respondents participate
+
+ess_minor %>% 
+  group_by(country) %>% 
+  count(total) %>% 
+  mutate(perc = n/sum(n)*100) %>% 
+  ggplot(aes(total, perc))+
+  geom_col(fill = "steelblue")+
+  labs(x = "", 
+       y = "%",
+       title = "Participation in Europe",
+       subtitle = "(maximum of 7)",
+       caption = "Source: European Social Survey")+
+  facet_wrap(~country)+
+  theme_light()+
+  scale_x_continuous(breaks = seq(0,7, by=1))+
+  scale_y_continuous(breaks = seq(0,60, by=10))
+
+# What about the inactives: those who do not participate?
+
+ess_minor %>% 
+  group_by(country) %>% 
+  count(total) %>% 
+  mutate(perc = n/sum(n)*100) %>% 
+  filter(total ==0) %>% 
+  ggplot(aes(reorder(country, -perc), perc))+
+  labs(x = "", 
+       y = "%",
+       title = "Which country has the most inactives?",
+       caption = "Source: European Social Survey")+
+  geom_col(fill = "steelblue")+
+  theme_light()
+
+# What about those who only vote?
+
+a <- ess_minor %>% 
+  group_by(country) %>% 
+  count() %>% rename("pop" = "n")
+
+b <- ess_minor %>% 
+  group_by(country) %>% 
+  filter(vote ==1 & total == 1) %>% 
+  count(total)
+
+left_join(a,b, by = "country") %>% 
+  group_by(country) %>% 
+  mutate(perc = n/pop*100) %>% 
+  ggplot(aes(reorder(country, -perc), perc))+
+  labs(x = "", 
+       y = "%",
+       title = "Which country has the highest percentage that vote only?",
+       caption = "Source: European Social Survey")+
+  geom_col(fill = "steelblue")+
+  theme_light()
+
+rm(a,b)
+
 
 
