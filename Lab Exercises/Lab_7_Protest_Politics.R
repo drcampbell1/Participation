@@ -39,7 +39,9 @@ filter(!is.na(petit)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 1: Petitioning by Country", caption="Source: ESS 2002-2016")+
+  labs(x="", y="", 
+       title="Figure 1: Petitioning by Country", 
+       caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
@@ -76,7 +78,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!boyct=="not boycotted") %>%
   ggplot(aes(x=reorder(country, -prop), y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 2: Boycotting by Country", caption="Source: ESS 2002-2018")+
+  labs(x="", y="", 
+       title="Figure 2: Boycotting by Country", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
@@ -93,7 +97,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 3: Petitioning by Age Category", caption="Source: ESS 2002-2018")+
+  labs(x="", y="", 
+       title="Figure 3: Petitioning by Age Category", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
@@ -107,7 +113,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!boyct=="not boycotted") %>%
   ggplot(aes(x=agecat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 4: Boycotting by Age Category", caption="Source: ESS 2002-2018")+
+  labs(x="", y="", 
+       title="Figure 4: Boycotting by Age Category", 
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
@@ -122,7 +130,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 5: Petitioning by Education", caption="Source: ESS 2002-2016")+
+  labs(x="", y="", 
+       title="Figure 5: Petitioning by Education", 
+       caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
  
@@ -136,7 +146,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!boyct=="not boycotted") %>%
   ggplot(aes(x=educat, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 6: Boycotting by Education", caption="Source: ESS 2002-2016")+
+  labs(x="", y="", 
+       title="Figure 6: Boycotting by Education", 
+       caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -152,7 +164,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!petit=="not signed") %>%
   ggplot(aes(x=gender, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 7: Petitioning by Gender", caption="ess 2016")+
+  labs(x="", y="", 
+       title="Figure 7: Petitioning by Gender", 
+       caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
@@ -164,7 +178,9 @@ mutate(prop=prop.table(n*100)) %>%
   filter(!boyct=="not boycotted") %>%
   ggplot(aes(x=gender, y=prop)) +
   geom_bar(stat="identity")+
-  labs(x="", y="", title="Figure 8: Boycotting by Gender", caption="Source: ESS 2002-2016")+
+  labs(x="", y="", 
+       title="Figure 8: Boycotting by Gender", 
+       caption="Source: ESS 2002-2016")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
 
