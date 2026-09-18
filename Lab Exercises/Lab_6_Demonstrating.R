@@ -81,7 +81,7 @@ mutate(prop=prop.table(n*100)) %>%
   labs(x="", 
        y="", 
        title="Figure 3: Demonstrating by Education", 
-       caption="ess 2016")+
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -99,7 +99,7 @@ mutate(prop=prop.table(n*100)) %>%
   labs(x="", 
        y="", 
        title="Figure 4: Demonstrating by Gender", 
-       caption="ess 2016")+
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -180,7 +180,7 @@ count(petit) %>%
   labs(x="", 
        y="%", 
        title="Figure 7: Petitioning by Socialising and Country", 
-       caption="ess 2016")+
+       caption="Source: ESS 2002-2018")+
   theme_bw()+
   facet_wrap(~country, nrow = 3)
   
