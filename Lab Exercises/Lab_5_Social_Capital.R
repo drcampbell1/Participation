@@ -67,7 +67,7 @@ mutate(prop=prop.table(n*100)) %>%
   labs(x="", 
        y="", 
        title="Figure 2: Social Trust Over Time", 
-       caption="ESS 2002-2018")+
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()+
   scale_x_continuous(breaks = c(2002, 2006, 2010, 2014, 2018))
@@ -105,7 +105,7 @@ mutate(prop=prop.table(n*100)) %>%
   labs(x="", 
        y="", 
        title="Figure 4: Social Trust and Education", 
-       caption="ESS 2002-2018")+
+       caption="Source: ESS 2002-2018")+
   scale_y_continuous(labels=scales::percent)+
   theme_bw()
   
@@ -158,7 +158,7 @@ count(vote) %>%
   labs(x="", 
        y="%", 
        title="Figure 6: Voting by Social Trust and Country", 
-       caption="ESS 2016")+
+       caption="Source: ESS 2016")+
   theme_bw()+
   facet_wrap(~country, nrow= 3)
 
